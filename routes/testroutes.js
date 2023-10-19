@@ -12,8 +12,8 @@ router.get("/", async (req, res) => {
 });
 
 //get one
-router.get("/:id", (req, res) => {
-  res.send(req.params.id);
+router.get("/:id", getId, (req, res) => {
+  res.send(res.item.name);
 });
 
 //create one
@@ -32,10 +32,24 @@ router.post("/", async (req, res) => {
 });
 
 //update one
-router.patch("/", (req, res) => {});
+router.patch("/:id", getId, (req, res) => {});
 
 //delete one
-router.delete("/:id", (req, res) => {
+router.delete("/:id", getId, (req, res) => {
   req.params.id;
 });
+
+async function getId(req, res, next) {
+  let item;
+  try {
+    item = await testModel.findById(req.params.id);
+    if (item == null) {
+      return res.status(404).json({ messgage: "cannot find item" });
+    }
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+  res.item = item;
+  next();
+}
 module.exports = router;
