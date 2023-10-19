@@ -1,0 +1,15 @@
+GET http://localhost:9090/testroutes
+
+###
+
+GET http://localhost:9090/testroutes/20
+
+###
+
+POST http://localhost:9090/testroutes
+Content-Type: application/json
+
+{
+    "name": "Imperial Guardsman",
+    "type": "infantry"
+}
