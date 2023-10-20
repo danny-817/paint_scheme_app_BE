@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
-const testSchema = new mongoose.Schema({
-  name: {
+const paintSchemeSchema = new mongoose.Schema({
+  scheme_name: {
     type: String,
     require: true,
   },
@@ -11,4 +11,4 @@ const testSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("testModel", testSchema);
+module.exports = mongoose.model("paintScheme", paintSchemeSchema);

@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const testModel = require("../models/testmodel");
+const paintScheme = require("../schema/paintSchemeModel");
 //get all
 router.get("/", async (req, res) => {
   try {
-    const items = await testModel.find();
+    const items = await paintScheme.find();
     res.json(items);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -13,12 +13,12 @@ router.get("/", async (req, res) => {
 
 //get one
 router.get("/:id", getId, (req, res) => {
-  res.send(res.item.name);
+  res.json(res.item);
 });
 
 //create one
 router.post("/", async (req, res) => {
-  const item = new testModel({
+  const item = new paintScheme({
     name: req.body.name,
     type: req.body.type,
   });
@@ -35,16 +35,21 @@ router.post("/", async (req, res) => {
 router.patch("/:id", getId, (req, res) => {});
 
 //delete one
-router.delete("/:id", getId, (req, res) => {
-  req.params.id;
+router.delete("/:id", getId, async (req, res) => {
+  try {
+    await paintScheme.deleteOne({ _id });
+    res.json({ message: "deleted subscriber" });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
 });
 
 async function getId(req, res, next) {
   let item;
   try {
-    item = await testModel.findById(req.params.id);
+    item = await paintScheme.findById(req.params.id);
     if (item == null) {
-      return res.status(404).json({ messgage: "cannot find item" });
+      return res.status(404).json({ message: "cannot find item" });
     }
   } catch (err) {
     return res.status(500).json({ message: err.message });
