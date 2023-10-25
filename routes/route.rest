@@ -1,0 +1,38 @@
+GET http://localhost:9090/api/paintschemes
+
+###
+ 
+GET http://localhost:9090/api/paintschemes/653985aec584dbb4d3e7b7df
+###
+
+POST http://localhost:9090/api/paintschemes
+Content-Type: application/json
+
+{
+    "username": "dannytest",
+    "scheme_name": "Bytecard",
+    "paint_list": [
+      "Corax White",
+      "Phoenician Purple",
+      "Caledor Sky",
+      "Lupercal Green",
+      "Wraithbone",
+      "Death Korps Drab",
+      "Dryad Bark",
+      "Iron Hands Steel",
+      "Daemonette Hide",
+      "Khorne Red",
+      "Runelord Brass"
+    ],
+    "steps": [
+      "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+      "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+      "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+      "Cupidatat laborum enim nostrud cillum voluptate amet incididunt consequat voluptate est esse eiusmod pariatur ad. ",
+      "Id ut mollit nisi enim nisi excepteur occaecat anim. Sit tempor cillum culpa quis ut."
+    ]
+    
+  }
+###
+
+DELETE http://localhost:9090/api/paintschemes/6532a2c21ee5c45fea59a5b0
