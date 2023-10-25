@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const request = require("supertest");
 const testSchemes = require("../data/test_schemes");
 
-const app = require("../app");
+const app = require("../server");
 
 beforeAll(async () => {
   await mongoose.connect(process.env.TEST_DATABASE_URL);

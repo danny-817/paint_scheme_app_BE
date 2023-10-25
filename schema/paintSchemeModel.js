@@ -20,12 +20,12 @@ const paintSchemeSchema = new mongoose.Schema({
     require: false,
   },
   paint_list: {
-    type: [paintNameSchema],
+    type: [String],
     require: false,
     uniqueItems: true,
   },
   steps: {
-    type: [paintStepSchema],
+    type: [String],
 
     require: false,
     uniqueItems: true,
@@ -36,4 +36,4 @@ const paintSchemeSchema = new mongoose.Schema({
   },
 });
 
-exports = mongoose.model("paintscheme", paintSchemeSchema);
+module.exports = mongoose.model("paintscheme", paintSchemeSchema);
