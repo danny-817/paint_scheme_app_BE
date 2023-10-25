@@ -1,17 +1,18 @@
 GET http://localhost:9090/testroutes
 
 ###
-
-GET http://localhost:9090/testroutes/6532916ccba437bbb3d86013
+ 
+GET http://localhost:9090/testroutes/653902eabde35bdcaba0c4c8
 ###
 
 POST http://localhost:9090/testroutes
 Content-Type: application/json
 
 {
-    "scheme_name": "Imperial Guardsman",
-    "type": "infantry"
+    "name": "Imperial Guardsman",
+    "paint": "blue, green",
+    "brushes": "000"
 }
 ###
 
-DELETE http://localhost:9090/testroutes/6532916ccba437bbb3d86013
+DELETE http://localhost:9090/testroutes/6532a2c21ee5c45fea59a5b0
