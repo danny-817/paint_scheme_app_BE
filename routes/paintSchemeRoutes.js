@@ -3,7 +3,6 @@ const router = express.Router();
 const paintscheme = require("../schema/paintSchemeModel");
 //get all
 router.get("/", async (req, res) => {
-  console.log("test");
   try {
     const items = await paintscheme.find();
     res.json(items);
