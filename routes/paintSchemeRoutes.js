@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const paintscheme = require("../schema/paintSchemeModel");
+// /api/paintschemes
 //get all
 router.get("/", async (req, res) => {
   try {

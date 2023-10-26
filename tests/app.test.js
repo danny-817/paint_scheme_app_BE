@@ -14,8 +14,8 @@ afterAll(() => {
   mongoose.connection.close();
 });
 
-describe("paint scheme tests", () => {
-  test("responds with all (20) saved paint schemes", () => {
+describe("/api/paintschemes", () => {
+  test("GET: responds with all (20) saved paint schemes", () => {
     return request(app)
       .get("/api/paintschemes")
       .expect(200)
@@ -23,8 +23,19 @@ describe("paint scheme tests", () => {
         expect(body.length).toBe(20);
       })
       .catch((err) => {
-        throw error;
+        throw err;
       });
   });
-  test("each item has a username and a scheme name", () => {});
+  test("each item has am id,username and a scheme name", () => {
+    return request(app)
+      .get("/api/paintschemes")
+      .expect(200)
+      .then(({ body }) => {
+        body.forEach((scheme) => {
+          expect(scheme).toHaveProperty("_id");
+          expect(scheme).toHaveProperty("username");
+          expect(scheme).toHaveProperty("scheme_name");
+        });
+      });
+  });
 });
