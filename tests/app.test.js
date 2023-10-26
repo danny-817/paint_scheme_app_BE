@@ -4,6 +4,7 @@ const testSchemes = require("../data/test_schemes");
 const seed = require("../seed/seed");
 
 const app = require("../server");
+const { Long } = require("mongodb");
 
 beforeAll(async () => {
   await mongoose.connect(process.env.TEST_DATABASE_URL);
@@ -12,6 +13,17 @@ beforeAll(async () => {
 
 afterAll(() => {
   mongoose.connection.close();
+});
+
+describe("non existant path", () => {
+  test("return a 404 error code and 'url not found' when given a non-existant url", () => {
+    return request(app)
+      .get("/badpath")
+      .expect(404)
+      .then((response) => {
+        expect(response.body.msg).toBe("url not found");
+      });
+  });
 });
 
 describe("/api/paintschemes", () => {

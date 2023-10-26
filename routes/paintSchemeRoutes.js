@@ -1,16 +1,23 @@
 const express = require("express");
 const router = express.Router();
 const paintscheme = require("../schema/paintSchemeModel");
+const { getAllSchemes } = require("../models/paintScheme.model");
 // /api/paintschemes
 //get all
-router.get("/", async (req, res) => {
-  try {
-    const items = await paintscheme.find();
-    res.json(items);
-  } catch (err) {
-    res.status(500).json({ message: err.message });
-  }
+
+router.get("/", (req, res) => {
+  getAllSchemes().then((allSchemes) => {
+    res.status(200).send(allSchemes);
+  });
 });
+// router.get("/", async (req, res) => {
+//   try {
+//     const items = await paintscheme.find();
+//     res.json(items);
+//   } catch (err) {
+//     res.status(500).json({ message: err.message });
+//   }
+// });
 
 //get one
 router.get("/:id", getId, (req, res) => {
