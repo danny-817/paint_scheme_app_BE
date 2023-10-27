@@ -38,7 +38,7 @@ describe("/api/paintschemes", () => {
         throw err;
       });
   });
-  test("each item has am id,username and a scheme name", () => {
+  test("GET: each item has am id,username and a scheme name", () => {
     return request(app)
       .get("/api/paintschemes")
       .expect(200)
@@ -50,4 +50,82 @@ describe("/api/paintschemes", () => {
         });
       });
   });
+  test.only("gets a single paint scheme when provided with a mongodb id", () => {
+    const testId = "653c0bf2201372814cf934f1";
+    const testScheme = {
+      username: "dannytest",
+      scheme_name: "Bytecard",
+      paint_list: [
+        "Corax White",
+        "Phoenician Purple",
+        "Caledor Sky",
+        "Lupercal Green",
+        "Wraithbone",
+        "Death Korps Drab",
+        "Dryad Bark",
+        "Iron Hands Steel",
+        "Daemonette Hide",
+        "Khorne Red",
+        "Runelord Brass",
+      ],
+      steps: [
+        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+        "Cupidatat laborum enim nostrud cillum voluptate amet incididunt consequat voluptate est esse eiusmod pariatur ad. ",
+        "Id ut mollit nisi enim nisi excepteur occaecat anim. Sit tempor cillum culpa quis ut.",
+      ],
+    };
+    return request(app)
+      .get(`/api/paintschemes/${testId}`)
+      .expect(200)
+      .then(({ body }) => {
+        expect(body).toEqual(testScheme);
+      });
+  });
+  test("POST: when posting a new document, returns that document and a 201 code", () => {
+    const testPost = {
+      username: "test_poster",
+      scheme_name: "test_scheme",
+      scheme_for: "jest test",
+      paint_list: ["Corax White", "Phoenician Purple"],
+      steps: [
+        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+      ],
+    };
+
+    return request(app)
+      .post("/api/paintschemes")
+      .send(testPost)
+      .expect(201)
+      .then(({ body }) => {
+        expect(body).toHaveProperty("username", expect.any(String));
+        expect(body).toHaveProperty("scheme_name", expect.any(String));
+        expect(body).toHaveProperty("scheme_for", expect.any(String));
+        expect(body).toHaveProperty("paint_list", expect.any(Array));
+        expect(body).toHaveProperty("steps", expect.any(Array));
+      });
+  });
+  test("POST: responds with an error and a message of bad request if not provided with the correct keys", () => {
+    const badTestPost = {
+      steps: [
+        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+      ],
+    };
+    return request(app)
+      .post("/api/paintschemes")
+      .send(badTestPost)
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("paintscheme validation failed");
+      });
+  });
 });
+
+//GET one
+//PATCH one
+//DELETE one

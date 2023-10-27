@@ -9,30 +9,30 @@ const paintStepSchema = new mongoose.Schema({
 const paintSchemeSchema = new mongoose.Schema({
   username: {
     type: String,
-    require: true,
+    required: true,
   },
   scheme_name: {
     type: String,
-    require: true,
+    required: true,
   },
   scheme_for: {
     type: String,
-    require: false,
+    required: false,
   },
   paint_list: {
     type: [String],
-    require: false,
+    required: false,
     uniqueItems: true,
   },
   steps: {
     type: [String],
 
-    require: false,
+    required: false,
     uniqueItems: true,
   },
   notes: {
     type: String,
-    require: false,
+    required: false,
   },
 });
 

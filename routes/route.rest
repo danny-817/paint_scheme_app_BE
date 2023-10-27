@@ -2,15 +2,15 @@ GET http://localhost:9090/api/paintschemes
 
 ###
  
-GET http://localhost:9090/api/paintschemes/653985aec584dbb4d3e7b7df
+GET http://localhost:9090/api/paintschemes/653c0dfbdb215d304eae2f35
 ###
 
 POST http://localhost:9090/api/paintschemes
 Content-Type: application/json
 
+    # "username": "dannytest",
+    #  "scheme_name": "Bytecard",
 {
-    "username": "dannytest",
-    "scheme_name": "Bytecard",
     "paint_list": [
       "Corax White",
       "Phoenician Purple",
