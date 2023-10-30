@@ -1,11 +1,11 @@
 const mongoose = require("mongoose");
-const paintNameSchema = new mongoose.Schema({
-  paint_name: { type: String },
-});
+// const paintNameSchema = new mongoose.Schema({
+//   paint_name: { type: String },
+// });
 
-const paintStepSchema = new mongoose.Schema({
-  paint_step: { type: String },
-});
+// const paintStepSchema = new mongoose.Schema({
+//   paint_step: { type: String },
+// });
 const paintSchemeSchema = new mongoose.Schema({
   username: {
     type: String,

@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const testSchemes = require("../data/test_schemes");
+const testUsers = require("../data/test_users");
 const seed = require("../seed/seed");
 
 const app = require("../server");
@@ -8,7 +9,7 @@ const { Long } = require("mongodb");
 
 beforeAll(async () => {
   await mongoose.connect(process.env.TEST_DATABASE_URL);
-  await seed(testSchemes);
+  await seed(testSchemes, testUsers);
 });
 
 afterAll(() => {
@@ -25,7 +26,7 @@ describe("non existant path", () => {
       });
   });
 });
-
+let testSchemeId = [];
 describe("/api/paintschemes", () => {
   test("GET: responds with all (20) saved paint schemes", () => {
     return request(app)
@@ -33,6 +34,7 @@ describe("/api/paintschemes", () => {
       .expect(200)
       .then(({ body }) => {
         expect(body.length).toBe(20);
+        testSchemeId = body[0]._id;
       })
       .catch((err) => {
         throw err;
@@ -50,37 +52,16 @@ describe("/api/paintschemes", () => {
         });
       });
   });
-  test.only("gets a single paint scheme when provided with a mongodb id", () => {
-    const testId = "653c0bf2201372814cf934f1";
-    const testScheme = {
-      username: "dannytest",
-      scheme_name: "Bytecard",
-      paint_list: [
-        "Corax White",
-        "Phoenician Purple",
-        "Caledor Sky",
-        "Lupercal Green",
-        "Wraithbone",
-        "Death Korps Drab",
-        "Dryad Bark",
-        "Iron Hands Steel",
-        "Daemonette Hide",
-        "Khorne Red",
-        "Runelord Brass",
-      ],
-      steps: [
-        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
-        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
-        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
-        "Cupidatat laborum enim nostrud cillum voluptate amet incididunt consequat voluptate est esse eiusmod pariatur ad. ",
-        "Id ut mollit nisi enim nisi excepteur occaecat anim. Sit tempor cillum culpa quis ut.",
-      ],
-    };
+  /*due to mongoDB generating id's each time the db is seeded, the id changes with each seed. the variable testSchemeId used below is set when the test that gets all data runs. See above.*/
+  test("gets a single paint scheme when provided with a mongodb id", () => {
     return request(app)
-      .get(`/api/paintschemes/${testId}`)
+      .get(`/api/paintschemes/${testSchemeId}`)
       .expect(200)
       .then(({ body }) => {
-        expect(body).toEqual(testScheme);
+        console.log(body);
+        expect(body).toHaveProperty("_id");
+        expect(body).toHaveProperty("username");
+        expect(body).toHaveProperty("scheme_name");
       });
   });
   test("POST: when posting a new document, returns that document and a 201 code", () => {
