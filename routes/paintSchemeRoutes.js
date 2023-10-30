@@ -18,6 +18,7 @@ router.get("/", getAllSchemes);
 
 //get one
 router.get("/:id", getId, (req, res) => {
+  console.log("get one");
   res.json(res.item);
 });
 
@@ -56,14 +57,20 @@ router.delete("/:id", getId, async (req, res) => {
 });
 
 async function getId(req, res, next) {
+  const mongoIdRegex = /^[a-fA-F0-9]{24}$/;
+  if (!mongoIdRegex.test(req.params.id)) {
+    return res.status(400).send({ msg: "Bad request" });
+  }
+  console.log(req.params.id, "getId function");
   let item;
   try {
     item = await paintscheme.findById(req.params.id);
+    console.log(item);
     if (item == null) {
-      return res.status(404).json({ message: "cannot find item" });
+      return res.status(404).send({ msg: "Paint scheme not found" });
     }
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    return res.status(500).send({ msg: err.msg });
   }
   res.item = item;
   console.log(res.item._id);
