@@ -66,7 +66,6 @@ describe("/api/paintschemes", () => {
       .get(`/api/paintschemes/${testSchemeId}`)
       .expect(200)
       .then(({ body }) => {
-        console.log(body);
         expect(body).toHaveProperty("_id");
         expect(body).toHaveProperty("username");
         expect(body).toHaveProperty("scheme_name");
@@ -146,7 +145,7 @@ describe("/api/paintschemes", () => {
       .send(testPost)
       .expect(400)
       .then(({ body }) => {
-        expect(body).toBe("A paint scheme by the name already exists");
+        expect(body.msg).toBe("A paint scheme by the name already exists");
       });
   });
 });
