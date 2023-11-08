@@ -22,7 +22,7 @@ function getOneScheme(req, res, next) {
     })
     .catch(next);
 }
-//paintscheme;
+
 function postNewScheme(req, res, next) {
   //check if scheme already exists
   paintscheme
@@ -46,4 +46,38 @@ function postNewScheme(req, res, next) {
     .catch((err) => console.error(err));
 }
 
-module.exports = { getAllSchemes, postNewScheme, getOneScheme };
+function patchScheme(req, res, next) {
+  const mongoIdRegex = /^[a-fA-F0-9]{24}$/;
+  if (!mongoIdRegex.test(req.params.id)) {
+    return res.status(400).send({ msg: "Bad request" });
+  }
+  const id = req.params.id;
+
+  paintscheme
+    .findOneAndUpdate(
+      { _id: id },
+      { $set: req.body },
+      { returnDocument: "after" }
+    )
+    .then((response) => {
+      if (response) {
+        console.log(response, "response");
+        return res.status(200).send(response);
+      } else {
+        return res.status(404).send({ msg: "Paint scheme not found" });
+      }
+    })
+    .catch(next);
+}
+
+// return Business.findOneAndUpdate(
+//   { _id },
+//   { $set: body },
+//   { returnDocument: "after" }
+// ).then((response) => {
+//   if (!response) {
+//     return Promise.reject({ status: 404, msg: "Business not found" });
+//   }
+//   return response;
+// });
+module.exports = { getAllSchemes, postNewScheme, getOneScheme, patchScheme };
