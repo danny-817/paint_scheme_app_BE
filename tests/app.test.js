@@ -3,6 +3,7 @@ const request = require("supertest");
 const testSchemes = require("../data/test_schemes");
 const testUsers = require("../data/test_users");
 const seed = require("../seed/seed");
+const endpointsJson = require("../endpoints.json");
 
 const app = require("../server");
 const { Long } = require("mongodb");
@@ -31,6 +32,16 @@ describe("non existant/misspelt path", () => {
       .expect(404)
       .expect(({ body }) => {
         expect(body.msg).toBe("url not found");
+      });
+  });
+});
+describe.only("/api", () => {
+  test("GET: responds with a list of all available endpoints", () => {
+    return request(app)
+      .get("/api")
+      .expect(200)
+      .then((response) => {
+        expect(JSON.parse(response.text)).toEqual(endpointsJson);
       });
   });
 });
