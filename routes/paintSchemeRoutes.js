@@ -4,7 +4,9 @@ const paintscheme = require("../schema/paintSchemeModel");
 const {
   getAllSchemes,
   postNewScheme,
+  getOneScheme,
 } = require("../controllers/paintScheme_controller");
+const { Long } = require("mongodb");
 // /api/paintschemes
 //get all
 
@@ -17,10 +19,11 @@ const {
 router.get("/", getAllSchemes);
 
 //get one
-router.get("/:id", getId, (req, res) => {
-  //console.log("get one");
-  res.json(res.item);
-});
+// router.get("/:id", getId, (req, res) => {
+//   res.json(res.item);
+// });
+
+router.get("/:id", getOneScheme);
 
 //create one
 // router.post("/", async (req, res) => {
@@ -44,7 +47,9 @@ router.get("/:id", getId, (req, res) => {
 router.post("/", postNewScheme);
 
 //update one
-router.patch("/:id", getId, (req, res) => {});
+router.patch("/:id", getId, (req, res) => {
+  console.log("patch route");
+});
 
 //delete one
 router.delete("/:id", getId, async (req, res) => {
@@ -61,11 +66,11 @@ async function getId(req, res, next) {
   if (!mongoIdRegex.test(req.params.id)) {
     return res.status(400).send({ msg: "Bad request" });
   }
-  //console.log(req.params.id, "getId function");
+
   let item;
   try {
     item = await paintscheme.findById(req.params.id);
-    //console.log(item);
+
     if (item == null) {
       return res.status(404).send({ msg: "Paint scheme not found" });
     }

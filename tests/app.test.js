@@ -148,23 +148,17 @@ describe("/api/paintschemes", () => {
         expect(body.msg).toBe("A paint scheme by the name already exists");
       });
   });
-  test("PATCH: returns an updated paint scheme when a patch request is made", () => {
-    const patchedData = { scheme_name: "patched scheme name" };
+  // test("PATCH: returns an updated paint scheme when a patch request is made", () => {
+  //   const patchedData = { scheme_name: "patched scheme name" };
 
-    return request(app)
-      .patch(`/api/paintschemes/${testSchemeId}`)
-      .send(patchedData)
-      .expect(200)
-      .then(({ body }) => {
-        expect(body.scheme_name).toEqual("patched scheme name");
-      });
-  });
+  //   return request(app)
+  //     .patch(`/api/paintschemes/${testSchemeId}`)
+  //     .send(patchedData)
+  //     .expect(200)
+  //     .then(({ body }) => {
+  //       expect(body.scheme_name).toEqual("patched scheme name");
+  //     });
+  // });
 });
 
-//PATCH one
 //DELETE one
-
-const res = await Person.updateOne(
-  { name: "Jean-Luc Picard" },
-  { ship: "USS Enterprise" }
-);

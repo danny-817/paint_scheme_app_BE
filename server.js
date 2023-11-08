@@ -18,6 +18,11 @@ app.use("/api/paintschemes", paintSchemeRouter);
 app.use((req, res) => {
   res.status(404).send({ msg: "url not found" });
 });
+app.use((err, request, response, next) => {
+  if (err.status && err.msg) {
+    response.status(err.status).send({ msg: err.msg });
+  } else next(err);
+});
 
 //app.listen(9090, () => console.log("server started"));
 module.exports = app;
