@@ -2,11 +2,80 @@
   "GET /api": {
     "description": "serves up a json representation of all the available endpoints of the api"
   },
-  "GET /api/topics": {
-    "description": "serves an array of all topics",
+  "GET /api/paintschemes": {
+    "description": "serves an array of all valid paint schemes",
     "queries": [],
     "exampleResponse": {
-      "topics": [{ "slug": "football", "description": "Footie!" }]
+      "topics": [
+        {
+          "username": "stutest",
+          "scheme_name": "Alpha"
+        },
+        {
+          "username": "paultest",
+          "scheme_name": "Rank",
+          "scheme_for": "Peregrine falcon",
+          "paint_list": ["Corax White", "Phoenician Purple", "Caledor Sky"]
+        },
+        {
+          "username": "paultest",
+          "scheme_name": "Konklux",
+          "scheme_for": "Musk ox",
+          "steps": [
+            "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+            "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+            "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+            "Id ut mollit nisi enim nisi excepteur occaecat anim. Sit tempor cillum culpa quis ut."
+          ],
+          "notes": "vitae quam suspendisse potenti"
+        }
+      ]
+    }
+  },
+  "GET /api/paintschemes/:id": {
+    "description": "returns a single paint scheme that natches the supplied id",
+    "queries": [],
+    "exampleResponse": {
+      "username": "paultest",
+      "scheme_name": "Konklux",
+      "scheme_for": "Musk ox",
+      "steps": [
+        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+        "Id ut mollit nisi enim nisi excepteur occaecat anim. Sit tempor cillum culpa quis ut."
+      ],
+      "notes": "vitae quam suspendisse potenti"
+    }
+  },
+  "POST /api/paintschemes": {
+    "description": "check if a paint scheme already exists on the database and if it doesn't, posts it to the database",
+    "queries": [],
+    "exampleResponse": {
+      "username": "test_poster",
+      "scheme_name": "test_scheme",
+      "scheme_for": "jest test",
+      "paint_list": ["Corax White", "Phoenician Purple"],
+      "steps": [
+        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. "
+      ]
+    }
+  },
+  "PATCH /api/paintschemes/:id": {
+    "description": "find a paint scheme on the database and patches it with updated data",
+    "queries": [],
+    "exampleResponse": {
+      "username": "test_poster",
+      "scheme_name": "patched scheme name",
+      "scheme_for": "jest test",
+      "paint_list": ["Corax White", "Phoenician Purple"],
+      "steps": [
+        "Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+        "Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+        "Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. "
+      ]
     }
   }
 }

@@ -35,7 +35,7 @@ function postNewScheme(req, res, next) {
             res.status(201).send(postedScheme);
           })
           .catch((err) =>
-            res.status(400).send({ msg: "paintscheme validation failed" })
+            res.status(400).send({ msg: "paint scheme validation failed" })
           );
       } else {
         res
@@ -43,7 +43,7 @@ function postNewScheme(req, res, next) {
           .send({ msg: "A paint scheme by the name already exists" });
       }
     })
-    .catch((err) => console.error(err));
+    .catch(next);
 }
 
 function patchScheme(req, res, next) {
