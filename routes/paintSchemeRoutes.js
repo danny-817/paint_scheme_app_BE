@@ -43,10 +43,16 @@ router.get("/:id", getId, (req, res) => {
 // 		res.status(400).json({ message: err.message });
 // 	}
 // });
-router.post("/", (req, res) => {
-	createNewScheme(req.body).then((addedScheme) => {
-		res.status(201).send(addedScheme);
-	});
+router.post("/", (req, res, next) => {
+	createNewScheme(req.body)
+		.then((addedScheme) => {
+			res.status(201).send(addedScheme);
+		})
+		.catch((error) => {
+			// Handle the error
+			console.log(error, "new error");
+			res.status(400).send({ message: error.message });
+		});
 });
 
 //update one
