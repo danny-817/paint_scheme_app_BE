@@ -27,7 +27,7 @@ describe("non existant path", () => {
 	});
 });
 
-describe("/api/paintschemes", () => {
+describe("GET - /api/paintschemes", () => {
 	test("GET: responds with all (20) saved paint schemes", () => {
 		return request(app)
 			.get("/api/paintschemes")
@@ -51,6 +51,9 @@ describe("/api/paintschemes", () => {
 				});
 			});
 	});
+});
+
+describe("CREATE - /api/paintschemes", () => {
 	test("CREATE: can create new paint schemes", () => {
 		createTestScheme = {
 			username: "dannytest",
@@ -72,7 +75,7 @@ describe("/api/paintschemes", () => {
 				expect(body).toHaveProperty("scheme_name");
 			});
 	});
-	test.only("cannot create 2 schemes with the same name and username", async () => {
+	test("cannot create 2 schemes with the same name and username", async () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",
@@ -83,32 +86,15 @@ describe("/api/paintschemes", () => {
 				"Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
 			],
 		};
-		// // Create and save the first scheme
-		// const firstScheme = new paintScheme(createTestScheme);
-		// await firstScheme.save();
 
-		// // Attempt to create and save another scheme with the same data
-		// const secondScheme = new paintScheme(createTestScheme);
-		// let error;
-		// try {
-		// 	await secondScheme.save();
-		// } catch (err) {
-		// 	console.log(err);
-		// 	error = err;
-		// }
-
-		// // Check the error
-		try {
-			await request(app).post("/api/paintschemes").send(createTestScheme);
-			await request(app).post("/api/paintschemes").send(createTestScheme);
-		} catch (error) {
-			console.log(error, "test block");
-		}
-
-		// Check that the save operation failed due to a duplicate key error
-		// expect(error).toBeDefined();
-		// expect(error.name).toBe("MongoError");
-		// expect(error.code).toBe(11000);
-		// MongoDB duplicate key error code
+		return request(app)
+			.post("/api/paintschemes")
+			.send(createTestScheme)
+			.expect(409)
+			.then((response) => {
+				expect(response.body.msg).toBe(
+					"That paint scheme already exists."
+				);
+			});
 	});
 });

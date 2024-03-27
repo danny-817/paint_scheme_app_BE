@@ -11,14 +11,6 @@ router.get("/", (req, res) => {
 		res.status(200).send(allSchemes);
 	});
 });
-// router.get("/", async (req, res) => {
-//   try {
-//     const items = await paintscheme.find();
-//     res.json(items);
-//   } catch (err) {
-//     res.status(500).json({ message: err.message });
-//   }
-// });
 
 //get one
 router.get("/:id", getId, (req, res) => {
@@ -26,33 +18,12 @@ router.get("/:id", getId, (req, res) => {
 });
 
 //create one
-// router.post("/", async (req, res) => {
-// 	const item = new paintscheme({
-// 		username: req.body.username,
-// 		scheme_name: req.body.scheme_name,
-// 		scheme_for: req.body.scheme_for,
-// 		paint_list: req.body.paint_list,
-// 		steps: req.body.steps,
-// 		notes: req.body.notes,
-// 	});
-
-// 	try {
-// 		const newItem = await item.save();
-// 		res.status(201).json(newItem);
-// 	} catch (err) {
-// 		res.status(400).json({ message: err.message });
-// 	}
-// });
 router.post("/", (req, res, next) => {
 	createNewScheme(req.body)
 		.then((addedScheme) => {
 			res.status(201).send(addedScheme);
 		})
-		.catch((error) => {
-			// Handle the error
-			console.log(error, "new error");
-			res.status(400).send({ message: error.message });
-		});
+		.catch(next);
 });
 
 //update one
