@@ -3,6 +3,7 @@ const router = express.Router();
 const paintscheme = require("../schema/paintSchemeModel");
 const { getAllSchemes } = require("../models/getAllSchemes.model");
 const { createNewScheme } = require("../models/createNewScheme.model");
+const { getSchemeById } = require("../models/getSchemeById.model");
 // /api/paintschemes
 //get all
 
@@ -13,8 +14,10 @@ router.get("/", (req, res) => {
 });
 
 //get one
-router.get("/:id", getId, (req, res) => {
-	res.json(res.item);
+router.get("/:id", (req, res) => {
+	const id = req.params;
+	getSchemeById(id);
+	console.log(id, "get one block");
 });
 
 //create one
