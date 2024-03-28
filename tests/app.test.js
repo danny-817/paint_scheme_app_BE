@@ -28,28 +28,52 @@ describe("non existant path", () => {
 });
 
 describe("GET - /api/paintschemes", () => {
-	test("GET: responds with all (20) saved paint schemes", () => {
-		return request(app)
-			.get("/api/paintschemes")
-			.expect(200)
-			.then(({ body }) => {
-				expect(body.length).toBe(20);
-			})
-			.catch((err) => {
-				throw err;
-			});
-	});
-	test("each item has an id,username and a scheme name", () => {
-		return request(app)
-			.get("/api/paintschemes")
-			.expect(200)
-			.then(({ body }) => {
-				body.forEach((scheme) => {
-					expect(scheme).toHaveProperty("_id");
-					expect(scheme).toHaveProperty("username");
-					expect(scheme).toHaveProperty("scheme_name");
+	describe("GET ALL PAINT SCHEMES", () => {
+		test("responds with all (20) saved paint schemes", () => {
+			return request(app)
+				.get("/api/paintschemes")
+				.expect(200)
+				.then(({ body }) => {
+					expect(body.length).toBe(20);
+				})
+				.catch((err) => {
+					throw err;
 				});
-			});
+		});
+		test("each item has an id,username and a scheme name", () => {
+			return request(app)
+				.get("/api/paintschemes")
+				.expect(200)
+				.then(({ body }) => {
+					body.forEach((scheme) => {
+						expect(scheme).toHaveProperty("_id");
+						expect(scheme).toHaveProperty("username");
+						expect(scheme).toHaveProperty("scheme_name");
+					});
+				});
+		});
+	});
+	describe("GET ONE PAINT SCHEME BY ID", () => {
+		test("returns the correct paint schemes when given an ID", () => {
+			patchTestScheme = {
+				username: "dannytest",
+				scheme_name: "patch test scheme",
+				paint_list: ["Devlan Mud", "Sunburst Yellow"],
+				steps: [
+					"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+					"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+				],
+			};
+
+			let testId;
+			request(app)
+				.post("/api/paintschemes")
+				.send(patchTestScheme)
+				.then(({ body }) => {
+					testId = body._id;
+					console.log(testId);
+				});
+		});
 	});
 });
 
