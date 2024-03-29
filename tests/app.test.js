@@ -54,7 +54,7 @@ describe("GET - /api/paintschemes", () => {
 		});
 	});
 	describe("GET ONE PAINT SCHEME BY ID", () => {
-		test.only("returns the correct paint schemes when given an ID", () => {
+		test("returns the correct paint schemes when given an ID", () => {
 			getOneTestScheme = {
 				username: "dannytest",
 				scheme_name: "get one test scheme",
@@ -71,14 +71,17 @@ describe("GET - /api/paintschemes", () => {
 				.send(getOneTestScheme)
 				.then(({ body }) => {
 					testId = body._id;
-					console.log(testId, "testId");
 				})
 				.then(() => {
 					return request(app)
 						.get(`/api/paintschemes/${testId}`)
 						.expect(200)
-						.then((body) => {
-							console.log(body, "body in test");
+						.then(({ body }) => {
+							expect(body._id).toBe(testId);
+							expect(body.scheme_name).toBe(
+								"get one test scheme"
+							);
+							// console.log(body, "body in test");
 						});
 				});
 		});
@@ -86,7 +89,7 @@ describe("GET - /api/paintschemes", () => {
 });
 
 describe("CREATE - /api/paintschemes", () => {
-	test.only("CREATE: can create new paint schemes", () => {
+	test("CREATE: can create new paint schemes", () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",
@@ -107,7 +110,7 @@ describe("CREATE - /api/paintschemes", () => {
 				expect(body).toHaveProperty("scheme_name");
 			});
 	});
-	test.only("cannot create 2 schemes with the same name and username", async () => {
+	test("cannot create 2 schemes with the same name and username", async () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",

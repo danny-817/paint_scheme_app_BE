@@ -15,9 +15,10 @@ router.get("/", (req, res) => {
 
 //get one
 router.get("/:id", (req, res) => {
-	const id = req.params;
-	getSchemeById(id);
-	console.log(id, "get one block");
+	const id = req.params.id;
+	getSchemeById(id).then((singleScheme) => {
+		res.status(200).send(singleScheme);
+	});
 });
 
 //create one
