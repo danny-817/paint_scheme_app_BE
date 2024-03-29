@@ -55,9 +55,9 @@ describe("GET - /api/paintschemes", () => {
 	});
 	describe("GET ONE PAINT SCHEME BY ID", () => {
 		test("returns the correct paint schemes when given an ID", () => {
-			patchTestScheme = {
+			getOneTestScheme = {
 				username: "dannytest",
-				scheme_name: "patch test scheme",
+				scheme_name: "get one test scheme",
 				paint_list: ["Devlan Mud", "Sunburst Yellow"],
 				steps: [
 					"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
@@ -68,10 +68,21 @@ describe("GET - /api/paintschemes", () => {
 			let testId;
 			request(app)
 				.post("/api/paintschemes")
-				.send(patchTestScheme)
+				.send(getOneTestScheme)
 				.then(({ body }) => {
 					testId = body._id;
-					console.log(testId);
+				})
+				.then(() => {
+					return request(app)
+						.get(`/api/paintschemes/${testId}`)
+						.expect(200)
+						.then(({ body }) => {
+							expect(body._id).toBe(testId);
+							expect(body.scheme_name).toBe(
+								"get one test scheme"
+							);
+							// console.log(body, "body in test");
+						});
 				});
 		});
 	});
