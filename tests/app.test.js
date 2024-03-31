@@ -92,6 +92,16 @@ describe("GET - /api/paintschemes", () => {
 					expect(response.body.msg).toBe("Invalid ID used");
 				});
 		});
+		test("returns and code of 404 when the id is valid but not in use", () => {
+			request(app)
+				.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
+				.expect(404)
+				.then((response) => {
+					expect(response.body.msg).toBe(
+						"No paint scheme found with this ID"
+					);
+				});
+		});
 	});
 });
 
@@ -117,7 +127,7 @@ describe("CREATE - /api/paintschemes", () => {
 				expect(body).toHaveProperty("scheme_name");
 			});
 	});
-	test("cannot create 2 schemes with the same name and username", async () => {
+	test("cannot create 2 schemes with the same name and username", () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",

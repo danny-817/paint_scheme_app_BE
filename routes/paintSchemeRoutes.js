@@ -15,12 +15,15 @@ router.get("/", (req, res) => {
 });
 
 //get one
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
 	const id = req.params.id;
 	if (mongoose.Types.ObjectId.isValid(id)) {
-		getSchemeById(id).then((singleScheme) => {
-			res.status(200).send(singleScheme);
-		});
+		// console.log(id, "id");
+		getSchemeById(id)
+			.then((singleScheme) => {
+				res.status(200).send(singleScheme);
+			})
+			.catch(next);
 	} else res.status(400).send({ msg: "Invalid ID used" });
 });
 
