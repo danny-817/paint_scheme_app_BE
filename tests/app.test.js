@@ -81,9 +81,11 @@ describe("GET - /api/paintschemes", () => {
 							expect(body.scheme_name).toBe(
 								"get one test scheme"
 							);
-							// console.log(body, "body in test");
 						});
 				});
+		});
+		test("validates the id used and returns an error message if its invalid", () => {
+			request(app).get("/api/paintschemes/1234").then;
 		});
 	});
 });
