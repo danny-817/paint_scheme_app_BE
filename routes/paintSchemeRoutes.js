@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
 const paintscheme = require("../schema/paintSchemeModel");
@@ -16,9 +17,11 @@ router.get("/", (req, res) => {
 //get one
 router.get("/:id", (req, res) => {
 	const id = req.params.id;
-	getSchemeById(id).then((singleScheme) => {
-		res.status(200).send(singleScheme);
-	});
+	if (mongoose.Types.ObjectId.isValid(id)) {
+		getSchemeById(id).then((singleScheme) => {
+			res.status(200).send(singleScheme);
+		});
+	} else res.status(400).send({ msg: "Invalid ID used" });
 });
 
 //create one

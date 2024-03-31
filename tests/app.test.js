@@ -84,8 +84,13 @@ describe("GET - /api/paintschemes", () => {
 						});
 				});
 		});
-		test("validates the id used and returns an error message if its invalid", () => {
-			request(app).get("/api/paintschemes/1234").then;
+		test("validates the id used and returns an error message and a 400 code if its invalid", () => {
+			request(app)
+				.get("/api/paintschemes/1234")
+				.expect(400)
+				.then((response) => {
+					expect(response.body.msg).toBe("Invalid ID used");
+				});
 		});
 	});
 });
