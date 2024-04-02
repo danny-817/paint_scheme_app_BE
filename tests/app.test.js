@@ -53,55 +53,53 @@ describe("GET - /api/paintschemes", () => {
 				});
 		});
 	});
-	describe("GET ONE PAINT SCHEME BY ID", () => {
-		test("returns the correct paint schemes when given an ID", () => {
-			getOneTestScheme = {
-				username: "dannytest",
-				scheme_name: "get one test scheme",
-				paint_list: ["Devlan Mud", "Sunburst Yellow"],
-				steps: [
-					"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
-					"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
-				],
-			};
+});
+describe("GET ONE PAINT SCHEME BY ID", () => {
+	test("returns the correct paint schemes when given an ID", () => {
+		getOneTestScheme = {
+			username: "dannytest",
+			scheme_name: "get one test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+			],
+		};
 
-			let testId;
-			request(app)
-				.post("/api/paintschemes")
-				.send(getOneTestScheme)
-				.then(({ body }) => {
-					testId = body._id;
-				})
-				.then(() => {
-					return request(app)
-						.get(`/api/paintschemes/${testId}`)
-						.expect(200)
-						.then(({ body }) => {
-							expect(body._id).toBe(testId);
-							expect(body.scheme_name).toBe(
-								"get one test scheme"
-							);
-						});
-				});
-		});
-		test("validates the id used and returns an error message and a 400 code if its invalid", () => {
-			request(app)
-				.get("/api/paintschemes/1234")
-				.expect(400)
-				.then((response) => {
-					expect(response.body.msg).toBe("Invalid ID used");
-				});
-		});
-		test("returns and code of 404 when the id is valid but not in use", () => {
-			request(app)
-				.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
-				.expect(404)
-				.then((response) => {
-					expect(response.body.msg).toBe(
-						"No paint scheme found with this ID"
-					);
-				});
-		});
+		let testId;
+		return request(app)
+			.post("/api/paintschemes")
+			.send(getOneTestScheme)
+			.then(({ body }) => {
+				testId = body._id;
+			})
+			.then(() => {
+				return request(app)
+					.get(`/api/paintschemes/${testId}`)
+					.expect(200)
+					.then(({ body }) => {
+						expect(body._id).toBe(testId);
+						expect(body.scheme_name).toBe("get one test scheme");
+					});
+			});
+	});
+	test("validates the id used and returns an error message and a 400 code if its invalid", () => {
+		request(app)
+			.get("/api/paintschemes/1234")
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("Invalid ID used");
+			});
+	});
+	test("returns and code of 404 when the id is valid but not in use", async () => {
+		request(app)
+			.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
+			.expect(404)
+			.then((response) => {
+				expect(response.body.msg).toBe(
+					"No paint scheme found with this ID"
+				);
+			});
 	});
 });
 
@@ -127,7 +125,7 @@ describe("CREATE - /api/paintschemes", () => {
 				expect(body).toHaveProperty("scheme_name");
 			});
 	});
-	test("cannot create 2 schemes with the same name and username", () => {
+	test("cannot create 2 schemes with the same name and username", async () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",
