@@ -15,12 +15,14 @@ router.get("/", (req, res) => {
 });
 
 //get one
-router.get("/:id", (req, res) => {
+router.get("/:id", (req, res, next) => {
 	const id = req.params.id;
 	if (mongoose.Types.ObjectId.isValid(id)) {
-		getSchemeById(id).then((singleScheme) => {
-			res.status(200).send(singleScheme);
-		});
+		getSchemeById(id)
+			.then((singleScheme) => {
+				res.status(200).send(singleScheme);
+			})
+			.catch(next);
 	} else res.status(400).send({ msg: "Invalid ID used" });
 });
 
@@ -34,10 +36,10 @@ router.post("/", (req, res, next) => {
 });
 
 //update one
-router.patch("/:id", getId, (req, res) => {});
+router.patch("/:id", (req, res) => {});
 
 //delete one
-router.delete("/:id", getId, async (req, res) => {
+router.delete("/:id", async (req, res) => {
 	try {
 		await paintscheme.deleteOne(res.item._id);
 		res.json({ message: "deleted subscriber" });
@@ -46,18 +48,18 @@ router.delete("/:id", getId, async (req, res) => {
 	}
 });
 
-async function getId(req, res, next) {
-	let item;
-	try {
-		item = await paintscheme.findById(req.params.id);
-		if (item == null) {
-			return res.status(404).json({ message: "cannot find item" });
-		}
-	} catch (err) {
-		return res.status(500).json({ message: err.message });
-	}
-	res.item = item;
-	console.log(res.item._id);
-	next();
-}
+// async function getId(req, res, next) {
+// 	let item;
+// 	try {
+// 		item = await paintscheme.findById(req.params.id);
+// 		if (item == null) {
+// 			return res.status(404).json({ message: "cannot find item" });
+// 		}
+// 	} catch (err) {
+// 		return res.status(500).json({ message: err.message });
+// 	}
+// 	res.item = item;
+// 	console.log(res.item._id);
+// 	next();
+// }
 module.exports = router;
