@@ -12,8 +12,11 @@ const ENV = process.env.NODE_ENV;
 app.use(express.json());
 
 const paintSchemeRouter = require("./routes/paintSchemeRoutes");
+const userProfileRouter = require("./routes/userProfileRoutes");
 
 app.use("/api/paintschemes", paintSchemeRouter);
+
+app.use("/api/userprofiles", userProfileRouter);
 
 app.use((req, res) => {
 	res.status(404).send({ msg: "url not found" });
