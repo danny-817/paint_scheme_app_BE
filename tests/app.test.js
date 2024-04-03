@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const request = require("supertest");
 const testSchemes = require("../data/test_schemes");
+const testUsers = require("../data/test_users");
 const seed = require("../seed/seed");
 const paintScheme = require("../schema/paintSchemeModel");
 
@@ -9,7 +10,7 @@ const { Long } = require("mongodb");
 
 beforeAll(async () => {
 	await mongoose.connect(process.env.TEST_DATABASE_URL);
-	await seed(testSchemes);
+	await seed(testSchemes, testUsers);
 });
 
 afterAll(() => {
@@ -104,7 +105,7 @@ describe("GET ONE PAINT SCHEME BY ID", () => {
 });
 
 describe("CREATE - /api/paintschemes", () => {
-	test("CREATE: can create new paint schemes", () => {
+	test("can create new paint schemes", () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",
@@ -144,6 +145,47 @@ describe("CREATE - /api/paintschemes", () => {
 			.then((response) => {
 				expect(response.body.msg).toBe(
 					"That paint scheme already exists."
+				);
+			});
+	});
+	test("responds with a 400 code and a msg of Bad Request if the request doesn't have a username", () => {
+		badUserNameScheme = {
+			username: "badUserName",
+			scheme_name: "bad username test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+			],
+		};
+
+		return request(app)
+			.post("/api/paintschemes")
+			.send(badUserNameScheme)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("Bad request");
+			});
+	});
+	test("responds with a 400 code and a msg of Please enter a name for your paint scheme if there is no scheme name", () => {
+		invalidNameScheme = {
+			username: "dannytest",
+			scheme_name: "",
+			paint_list: ["Corax White", "Phoenician Purple"],
+			steps: [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+				"Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+			],
+		};
+
+		return request(app)
+			.post("/api/paintschemes")
+			.send(invalidNameScheme)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe(
+					"Please enter a name for your paint scheme"
 				);
 			});
 	});
