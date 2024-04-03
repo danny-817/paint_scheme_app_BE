@@ -106,7 +106,7 @@ describe("GET - /api/paintschemes", () => {
 	});
 });
 
-describe("CREATE - /api/paintschemes", () => {
+describe("POST - /api/paintschemes", () => {
 	test("when posting a new scheme, responds with a 201 code and a copy of the scheme", () => {
 		createTestScheme = {
 			username: "dannytest",
@@ -228,6 +228,38 @@ describe("GET - /api/userprofiles", () => {
 			.expect(404)
 			.then((response) => {
 				expect(response.body.msg).toBe("url not found");
+			});
+	});
+});
+
+describe("POST - /api/userprofiles", () => {
+	test("responds with a 201 code and a copy of the user when creating a new user", () => {
+		newUserData = {
+			username: "newuser",
+			password: "newuserpassword",
+			email_address: "newuser@email.com",
+			security_answers: ["new", "user", "answers"],
+		};
+
+		return request(app)
+			.post("/api/userprofiles")
+			.send(newUserData)
+			.expect(201)
+			.then(({ body }) => {
+				console.log(body, "body");
+				expect(body).not.toBe(newUserData);
+				expect(body.__v).toBe(0);
+				expect(body).toHaveProperty("username", expect.any(String));
+				expect(body).toHaveProperty("password", expect.any(String));
+				expect(body).toHaveProperty(
+					"email_address",
+					expect.any(String)
+				);
+				expect(body).toHaveProperty(
+					"security_answers",
+					expect.any(Array)
+				);
+				expect(body).toHaveProperty("_id", expect.any(String));
 			});
 	});
 });
