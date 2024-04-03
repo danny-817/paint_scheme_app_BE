@@ -105,7 +105,7 @@ describe("GET ONE PAINT SCHEME BY ID", () => {
 });
 
 describe("CREATE - /api/paintschemes", () => {
-	test("can create new paint schemes", () => {
+	test("when posting a new scheme, responds with a 201 code and a copy of the scheme", () => {
 		createTestScheme = {
 			username: "dannytest",
 			scheme_name: "newly created scheme",
@@ -121,9 +121,11 @@ describe("CREATE - /api/paintschemes", () => {
 			.send(createTestScheme)
 			.expect(201)
 			.then(({ body }) => {
-				expect(body).toHaveProperty("_id");
-				expect(body).toHaveProperty("username");
-				expect(body).toHaveProperty("scheme_name");
+				expect(body).toHaveProperty("_id", expect.any(String));
+				expect(body).toHaveProperty("username", expect.any(String));
+				expect(body).toHaveProperty("scheme_name", expect.any(String));
+				expect(body).toHaveProperty("paint_list", expect.any(Array));
+				expect(body).toHaveProperty("steps", expect.any(Array));
 			});
 	});
 	test("cannot create 2 schemes with the same name and username", async () => {
