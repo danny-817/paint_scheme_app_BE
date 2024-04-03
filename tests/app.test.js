@@ -194,3 +194,40 @@ describe("CREATE - /api/paintschemes", () => {
 			});
 	});
 });
+
+describe("GET - /api/userprofiles", () => {
+	test("responds with a 200 and a list of all user profiles (5)", () => {
+		return request(app)
+			.get("/api/userprofiles")
+			.expect(200)
+			.then((response) => {
+				expect(response.body).toHaveLength(5);
+				response.body.forEach((profile) => {
+					expect(profile).toHaveProperty(
+						"username",
+						expect.any(String)
+					);
+					expect(profile).toHaveProperty(
+						"password",
+						expect.any(String)
+					);
+					expect(profile).toHaveProperty(
+						"email_address",
+						expect.any(String)
+					);
+					expect(profile).toHaveProperty(
+						"security_answers",
+						expect.any(Array)
+					);
+				});
+			});
+	});
+	test("responds with a 400 code and a message of Path nto found if the path is incorrect", () => {
+		return request(app)
+			.get("/api/users")
+			.expect(404)
+			.then((response) => {
+				expect(response.body.msg).toBe("url not found");
+			});
+	});
+});
