@@ -194,3 +194,14 @@ describe("CREATE - /api/paintschemes", () => {
 			});
 	});
 });
+
+describe("GET - /api/userprofiles", () => {
+	test("responds with a 200 and a list of all user profiles (5)", () => {
+		return request(app)
+			.get("/api/userprofiles")
+			.expect(200)
+			.then((response) => {
+				console.log(response.body);
+			});
+	});
+});
