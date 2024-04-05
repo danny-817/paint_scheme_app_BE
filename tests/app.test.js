@@ -222,7 +222,7 @@ describe("GET - /api/userprofiles", () => {
 				});
 			});
 	});
-	test("responds with a 400 code and a message of Path nto found if the path is incorrect", () => {
+	test("responds with a 404 code and a message of Path nto found if the path is incorrect", () => {
 		return request(app)
 			.get("/api/users")
 			.expect(404)
@@ -246,7 +246,6 @@ describe("POST - /api/userprofiles", () => {
 			.send(newUserData)
 			.expect(201)
 			.then(({ body }) => {
-				console.log(body, "body");
 				expect(body).not.toBe(newUserData);
 				expect(body.__v).toBe(0);
 				expect(body).toHaveProperty("username", expect.any(String));
@@ -260,6 +259,27 @@ describe("POST - /api/userprofiles", () => {
 					expect.any(Array)
 				);
 				expect(body).toHaveProperty("_id", expect.any(String));
+			});
+	});
+	test("responds with an error and a message of <email_address>is not a valid email address! when in invalid email address is used", () => {
+		badEmailUserData = {
+			username: "bad_email_user",
+			password: "badEmailuserpassword",
+			email_address: "newuseratemailcom",
+			security_answers: ["bad", "email", "answers"],
+		};
+
+		return request(app)
+			.post("/api/userprofiles")
+			.send(badEmailUserData)
+			.then((response) => {
+				console.log(
+					response.body.errors.email_address.message,
+					"response"
+				);
+				expect(response.body.errors.email_address.message).toBe(
+					"newuseratemailcom is not a valid email address!"
+				);
 			});
 	});
 });
