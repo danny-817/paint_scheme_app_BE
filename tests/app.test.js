@@ -297,3 +297,19 @@ describe("POST - /api/userprofiles", () => {
 			});
 	});
 });
+
+describe("DELETE - /api/useprofiles", () => {
+	test("responds with a code of 200 and confirmation the user has been deleted", async () => {
+		userToDelete = {
+			username: "delete this user",
+			password: "deletethispassword",
+			email_address: "deleted@email.com",
+			security_answers: ["delete", "me", "now"],
+		};
+		const createdUserResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(userToDelete);
+		const createdUser = createdUserResponse.body;
+		console.log(createdUser);
+	});
+});
