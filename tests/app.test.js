@@ -273,12 +273,26 @@ describe("POST - /api/userprofiles", () => {
 			.post("/api/userprofiles")
 			.send(badEmailUserData)
 			.then((response) => {
-				console.log(
-					response.body.errors.email_address.message,
-					"response"
-				);
 				expect(response.body.errors.email_address.message).toBe(
 					"newuseratemailcom is not a valid email address!"
+				);
+			});
+	});
+	test("responds with an error and an message when trying to post a user that already exists", () => {
+		duplicateUserData = {
+			username: "dannytest",
+			password: "newuserpassword2",
+			email_address: "newuser2@email.com",
+			security_answers: ["new", "user", "answers"],
+		};
+
+		return request(app)
+			.post("/api/userprofiles")
+			.send(duplicateUserData)
+			.then((response) => {
+				expect(response.body.errorCode).toBe(11000);
+				expect(response.body.errorMessage).toBe(
+					"User already exists, check your details and try again."
 				);
 			});
 	});
