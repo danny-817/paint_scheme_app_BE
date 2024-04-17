@@ -311,5 +311,12 @@ describe("DELETE - /api/useprofiles", () => {
 			.send(userToDelete);
 		const createdUser = createdUserResponse.body;
 		console.log(createdUser);
+
+		return request(app)
+			.delete("/api/userprofiles")
+			.send(createdUser._id)
+			.then((response) => {
+				console.log(response.body, "response");
+			});
 	});
 });
