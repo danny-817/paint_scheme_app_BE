@@ -18,4 +18,9 @@ router.post("/", (req, res, next) => {
 	});
 });
 
+router.delete("/:id", (req, res, next) => {
+	const idToDelete = req.params;
+	console.log(idToDelete, "id to delete");
+});
+
 module.exports = router;

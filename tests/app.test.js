@@ -299,7 +299,7 @@ describe("POST - /api/userprofiles", () => {
 });
 
 describe("DELETE - /api/useprofiles", () => {
-	test("responds with a code of 200 and confirmation the user has been deleted", async () => {
+	test.only("responds with a code of 200 and confirmation the user has been deleted", async () => {
 		userToDelete = {
 			username: "delete this user",
 			password: "deletethispassword",
@@ -310,11 +310,9 @@ describe("DELETE - /api/useprofiles", () => {
 			.post("/api/userprofiles")
 			.send(userToDelete);
 		const createdUser = createdUserResponse.body;
-		console.log(createdUser);
-
+		console.log(createdUser._id);
 		return request(app)
-			.delete("/api/userprofiles")
-			.send(createdUser._id)
+			.delete(`/api/userprofiles/${createdUser._id}`)
 			.then((response) => {
 				console.log(response.body, "response");
 			});
