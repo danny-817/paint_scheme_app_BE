@@ -299,7 +299,7 @@ describe("POST - /api/userprofiles", () => {
 });
 
 describe("DELETE - /api/useprofiles", () => {
-	test("responds with a code of 204 and confirmation the user has been deleted", async () => {
+	test("responds with a code of 204 ", async () => {
 		userToDelete = {
 			username: "delete this user",
 			password: "deletethispassword",
@@ -318,5 +318,13 @@ describe("DELETE - /api/useprofiles", () => {
 		// 	 Check for the existence of the deletedCount property
 		// 	expect(response.body).toHaveProperty("deletedCount");
 		// });
+	});
+	test("responds with a 404 if the id is non-existant", () => {
+		return request(app)
+			.delete("/api/userprofiles/53cb6b9b4f4ddef1ad47f943")
+			.expect(404)
+			.then((response) => {
+				expect(response.body.msg).toBe("No user exists with this ID.");
+			});
 	});
 });

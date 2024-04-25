@@ -23,6 +23,7 @@ router.delete("/:id", (req, res, next) => {
 	const idToDelete = req.params;
 	deleteUserById(idToDelete)
 		.then((response) => {
+			console.log(response);
 			res.status(204).send();
 		})
 		.catch(next);
