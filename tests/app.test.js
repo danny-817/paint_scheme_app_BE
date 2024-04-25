@@ -297,3 +297,34 @@ describe("POST - /api/userprofiles", () => {
 			});
 	});
 });
+
+describe("DELETE - /api/useprofiles", () => {
+	test("responds with a code of 204 ", async () => {
+		userToDelete = {
+			username: "delete this user",
+			password: "deletethispassword",
+			email_address: "deleted@email.com",
+			security_answers: ["delete", "me", "now"],
+		};
+		const createdUserResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(userToDelete);
+		const createdUser = createdUserResponse.body;
+		return request(app)
+			.delete(`/api/userprofiles/${createdUser._id}`)
+			.expect(204);
+		// .then((response) => {
+		// 	console.log(response, "response");
+		// 	 Check for the existence of the deletedCount property
+		// 	expect(response.body).toHaveProperty("deletedCount");
+		// });
+	});
+	test("responds with a 404 if the id is non-existant", () => {
+		return request(app)
+			.delete("/api/userprofiles/53cb6b9b4f4ddef1ad47f943")
+			.expect(404)
+			.then((response) => {
+				expect(response.body.msg).toBe("No user exists with this ID.");
+			});
+	});
+});

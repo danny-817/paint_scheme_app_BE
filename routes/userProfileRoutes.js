@@ -4,6 +4,7 @@ const router = express.Router();
 const userprofile = require("../schema/userModel");
 const { getAllUserProfiles } = require("../models/getAllUserProfiles.model");
 const { postNewUser } = require("../models/postNewUser.model");
+const { deleteUserById } = require("../models/deleteUser.model");
 
 router.get("/", (req, res, next) => {
 	getAllUserProfiles().then((allUserProfiles) => {
@@ -16,6 +17,16 @@ router.post("/", (req, res, next) => {
 	postNewUser(newUserData).then((newUser) => {
 		res.status(201).send(newUser);
 	});
+});
+
+router.delete("/:id", (req, res, next) => {
+	const idToDelete = req.params;
+	deleteUserById(idToDelete)
+		.then((response) => {
+			console.log(response);
+			res.status(204).send();
+		})
+		.catch(next);
 });
 
 module.exports = router;
