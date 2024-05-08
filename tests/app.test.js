@@ -54,55 +54,53 @@ describe("GET - /api/paintschemes", () => {
 				});
 		});
 	});
-	describe("GET ONE PAINT SCHEME BY ID", () => {
-		test("returns the correct paint schemes when given an ID", () => {
-			getOneTestScheme = {
-				username: "dannytest",
-				scheme_name: "get one test scheme",
-				paint_list: ["Devlan Mud", "Sunburst Yellow"],
-				steps: [
-					"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
-					"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
-				],
-			};
+});
+describe("GET - /api/paintschemes/${id} ", () => {
+	test("returns the correct paint schemes when given an ID", () => {
+		getOneTestScheme = {
+			username: "dannytest",
+			scheme_name: "get one test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+			],
+		};
 
-			let testId;
-			return request(app)
-				.post("/api/paintschemes")
-				.send(getOneTestScheme)
-				.then(({ body }) => {
-					testId = body._id;
-				})
-				.then(() => {
-					return request(app)
-						.get(`/api/paintschemes/${testId}`)
-						.expect(200)
-						.then(({ body }) => {
-							expect(body._id).toBe(testId);
-							expect(body.scheme_name).toBe(
-								"get one test scheme"
-							);
-						});
-				});
-		});
-		test("validates the id used and returns an error message and a 400 code if its invalid", () => {
-			request(app)
-				.get("/api/paintschemes/1234")
-				.expect(400)
-				.then((response) => {
-					expect(response.body.msg).toBe("Invalid ID used");
-				});
-		});
-		test("returns and code of 404 when the id is valid but not in use", async () => {
-			request(app)
-				.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
-				.expect(404)
-				.then((response) => {
-					expect(response.body.msg).toBe(
-						"No paint scheme found with this ID"
-					);
-				});
-		});
+		let testId;
+		return request(app)
+			.post("/api/paintschemes")
+			.send(getOneTestScheme)
+			.then(({ body }) => {
+				testId = body._id;
+			})
+			.then(() => {
+				return request(app)
+					.get(`/api/paintschemes/${testId}`)
+					.expect(200)
+					.then(({ body }) => {
+						expect(body._id).toBe(testId);
+						expect(body.scheme_name).toBe("get one test scheme");
+					});
+			});
+	});
+	test("validates the id used and returns an error message and a 400 code if its invalid", () => {
+		request(app)
+			.get("/api/paintschemes/1234")
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("Invalid ID used");
+			});
+	});
+	test("returns and code of 404 when the id is valid but not in use", async () => {
+		request(app)
+			.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
+			.expect(404)
+			.then((response) => {
+				expect(response.body.msg).toBe(
+					"No paint scheme found with this ID"
+				);
+			});
 	});
 });
 
@@ -231,6 +229,47 @@ describe("GET - /api/userprofiles", () => {
 			});
 	});
 });
+describe("GET - /api/userprofiles/${id}", () => {
+	test("responds with a 200 code and the specified user", async () => {
+		newUserToGet = {
+			username: "newusertoget",
+			password: "newusertogetpassword",
+			email_address: "newusertoget@email.com",
+			security_answers: ["get", "this", "user"],
+		};
+		const userToGetResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(newUserToGet);
+
+		const createdUser = userToGetResponse.body;
+
+		console.log(createdUser);
+
+		return request(app)
+			.get(`/api/userprofiles/${createdUser._id}`)
+			.expect(200)
+			.then((response) => {
+				expect(response.body).toHaveProperty(
+					"username",
+					"newusertoget"
+				);
+				expect(response.body).toHaveProperty(
+					"password",
+					"newusertogetpassword"
+				);
+				expect(response.body).toHaveProperty(
+					"email_address",
+					"newusertoget@email.com"
+				);
+				expect(response.body).toHaveProperty("security_answers", [
+					"get",
+					"this",
+					"user",
+				]);
+				expect(response.body).not.toBe(newUserToGet);
+			});
+	});
+});
 
 describe("POST - /api/userprofiles", () => {
 	test("responds with a 201 code and a copy of the user when creating a new user", () => {
@@ -298,7 +337,7 @@ describe("POST - /api/userprofiles", () => {
 	});
 });
 
-describe("DELETE - /api/useprofiles", () => {
+describe("DELETE - /api/useprofiles/${id}", () => {
 	test("responds with a code of 204 ", async () => {
 		userToDelete = {
 			username: "delete this user",
