@@ -20,7 +20,6 @@ router.get("/:id", (req, res, next) => {
 	if (mongoose.Types.ObjectId.isValid(idToGet)) {
 		getUserById(idToGet)
 			.then((retrievedUser) => {
-				console.log(retrievedUser);
 				if (retrievedUser) {
 					res.status(200).send(retrievedUser);
 				} else
