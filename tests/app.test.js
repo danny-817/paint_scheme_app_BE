@@ -220,7 +220,7 @@ describe("GET - /api/userprofiles", () => {
 				});
 			});
 	});
-	test("responds with a 404 code and a message of Path nto found if the path is incorrect", () => {
+	test("responds with a 404 code and a message of Path not found if the path is incorrect", () => {
 		return request(app)
 			.get("/api/users")
 			.expect(404)
@@ -243,7 +243,7 @@ describe("GET - /api/userprofiles/${id}", () => {
 
 		const createdUser = userToGetResponse.body;
 
-		console.log(createdUser);
+		// console.log(createdUser);
 
 		return request(app)
 			.get(`/api/userprofiles/${createdUser._id}`)
@@ -267,6 +267,23 @@ describe("GET - /api/userprofiles/${id}", () => {
 					"user",
 				]);
 				expect(response.body).not.toBe(newUserToGet);
+			});
+	});
+	test("responds with a 400 code and 'Invalid ID used' if a non valid user id is used", () => {
+		return request(app)
+			.get("/api/userprofiles/invalidid")
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("Invalid ID used");
+			});
+	});
+	test("responds with a 404 code and msg of 'No user found with this ID.", () => {
+		return request(app)
+			.get("/api/userprofiles/53cb6b9b4f4ddef1ad47f943")
+			.expect(404)
+			.then((response) => {
+				console.log(response.body);
+				expect(response.body.msg).toBe("No user found with this ID.");
 			});
 	});
 });

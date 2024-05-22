@@ -17,11 +17,19 @@ router.get("/", (req, res, next) => {
 
 router.get("/:id", (req, res, next) => {
 	const idToGet = req.params.id;
-	getUserById(idToGet)
-		.then((retrievedUser) => {
-			res.status(200).send(retrievedUser);
-		})
-		.catch(next);
+	if (mongoose.Types.ObjectId.isValid(idToGet)) {
+		getUserById(idToGet)
+			.then((retrievedUser) => {
+				console.log(retrievedUser);
+				if (retrievedUser) {
+					res.status(200).send(retrievedUser);
+				} else
+					res.status(404).send({
+						msg: "No user found with this ID.",
+					});
+			})
+			.catch(next);
+	} else res.status(400).send({ msg: "Invalid ID used" });
 });
 
 router.post("/", (req, res, next) => {
