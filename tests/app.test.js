@@ -282,7 +282,6 @@ describe("GET - /api/userprofiles/${id}", () => {
 			.get("/api/userprofiles/53cb6b9b4f4ddef1ad47f943")
 			.expect(404)
 			.then((response) => {
-				console.log(response.body);
 				expect(response.body.msg).toBe("No user found with this ID.");
 			});
 	});
