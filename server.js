@@ -10,7 +10,6 @@ db.on("error", (error) => console.error(error));
 const ENV = process.env.NODE_ENV;
 
 app.use(express.json());
-
 const paintSchemeRouter = require("./routes/paintSchemeRoutes");
 const userProfileRouter = require("./routes/userProfileRoutes");
 

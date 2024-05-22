@@ -383,3 +383,34 @@ describe("DELETE - /api/useprofiles/${id}", () => {
 			});
 	});
 });
+describe("PATCH - /api/paintschemes", () => {
+	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
+		patchTestScheme = {
+			username: "dannytest",
+			scheme_name: "patch test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: ["Patch this data ", "Also patch this data"],
+		};
+
+		const schemeToPatchResponse = await request(app)
+			.post("/api/paintschemes")
+			.send(patchTestScheme);
+
+		schemeToPatch = schemeToPatchResponse.body;
+
+		return request(app)
+			.patch(`/api/paintschemes/${schemeToPatch._id}`)
+			.send({
+				username: "this name has been patched",
+				steps: [
+					"this step has been patched",
+					"this step has also been patched",
+				],
+			})
+			.expect(200)
+			.then((response) => {
+				console.log(response.body);
+				expect(response.body.msg).toBe("Patch successful.");
+			});
+	});
+});

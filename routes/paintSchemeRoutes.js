@@ -36,7 +36,9 @@ router.post("/", (req, res, next) => {
 });
 
 //update one
-router.patch("/:id", (req, res) => {});
+router.patch("/:id", (req, res) => {
+	console.log("in the patch code");
+});
 
 //delete one
 router.delete("/:id", async (req, res) => {
