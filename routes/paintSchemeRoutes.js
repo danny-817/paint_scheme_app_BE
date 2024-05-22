@@ -5,6 +5,7 @@ const paintscheme = require("../schema/paintSchemeModel");
 const { getAllSchemes } = require("../models/getAllSchemes.model");
 const { createNewScheme } = require("../models/createNewScheme.model");
 const { getSchemeById } = require("../models/getSchemeById.model");
+const { patchPaintScheme } = require("../models/patchPaintScheme.model");
 // /api/paintschemes
 //get all
 
@@ -36,8 +37,13 @@ router.post("/", (req, res, next) => {
 });
 
 //update one
-router.patch("/:id", (req, res) => {
-	console.log("in the patch code");
+router.patch("/:id", (req, res, next) => {
+	id = req.params.id;
+	patchPaintScheme(id, req.body)
+		.then((patchedScheme) => {
+			res.status(200).send({ msg: "Patch successful.", patchedScheme });
+		})
+		.catch(next);
 });
 
 //delete one
