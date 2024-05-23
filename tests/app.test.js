@@ -398,19 +398,47 @@ describe("PATCH - /api/paintschemes", () => {
 
 		schemeToPatch = schemeToPatchResponse.body;
 
+		const patchData = {
+			username: "this name has been patched",
+			steps: [
+				"this step has been patched",
+				"this step has also been patched",
+			],
+		};
+
 		return request(app)
 			.patch(`/api/paintschemes/${schemeToPatch._id}`)
-			.send({
-				username: "this name has been patched",
-				steps: [
-					"this step has been patched",
-					"this step has also been patched",
-				],
-			})
+			.send(patchData)
 			.expect(200)
 			.then((response) => {
-				console.log(response.body);
 				expect(response.body.msg).toBe("Patch successful.");
+			});
+	});
+	test.only("responds with a 400 code when the data trying to be written is the incorrect type", async () => {
+		patchTestScheme = {
+			username: "dannytest",
+			scheme_name: "patch test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: ["Patch this data ", "Also patch this data"],
+		};
+
+		const schemeToPatchResponse = await request(app)
+			.post("/api/paintschemes")
+			.send(patchTestScheme);
+
+		schemeToPatch = schemeToPatchResponse.body;
+
+		const badPatchData = {
+			username: 123345,
+			paint_list: { key: "value" },
+			steps: "String",
+		};
+		return request(app)
+			.patch(`/api/paintschemes/${schemeToPatch._id}`)
+			.send(badPatchData)
+			.expect(400)
+			.then((response) => {
+				console.log(response, "response");
 			});
 	});
 });
