@@ -41,7 +41,7 @@ router.patch("/:id", (req, res, next) => {
 	id = req.params.id;
 	patchPaintScheme(id, req.body)
 		.then((patchedScheme) => {
-			// console.log(patchedScheme, "<<<<<<<<<<");
+			console.log(patchedScheme, "<<<<<<<<<<");
 			res.status(200).send({ msg: "Patch successful.", patchedScheme });
 		})
 		.catch(next);

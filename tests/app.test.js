@@ -447,7 +447,7 @@ describe("PATCH - /api/paintschemes", () => {
 	test("when a patch request is made with no data values the request is denied.", async () => {
 		patchTestScheme = {
 			username: "dannytest",
-			scheme_name: "patch test scheme",
+			scheme_name: "blank patch data test scheme",
 			paint_list: ["Devlan Mud", "Sunburst Yellow"],
 			steps: [
 				"this data shouldnt be patched",
