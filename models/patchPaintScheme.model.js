@@ -13,7 +13,7 @@ async function patchPaintScheme(id, patchData) {
 		return patchedScheme;
 		// console.log(patchedScheme, "patched scheme");
 	} catch (error) {
-		console.log(error, "error");
+		// console.log(error, "error");
 		throw error;
 	}
 }

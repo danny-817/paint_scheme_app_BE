@@ -414,7 +414,7 @@ describe("PATCH - /api/paintschemes", () => {
 				expect(response.body.msg).toBe("Patch successful.");
 			});
 	});
-	test.only("responds with a 400 code when the data trying to be written is the incorrect type", async () => {
+	test("responds with a 400 code when the data trying to be written is the incorrect type", async () => {
 		patchTestScheme = {
 			username: "dannytest",
 			scheme_name: "patch test scheme",
@@ -438,7 +438,41 @@ describe("PATCH - /api/paintschemes", () => {
 			.send(badPatchData)
 			.expect(400)
 			.then((response) => {
-				console.log(response, "response");
+				// console.log(response.body.msg, "response");
+				expect(response.body.msg).toBe(
+					"An error occured, please check you entered the correct data."
+				);
+			});
+	});
+	test("when a patch request is made with no data values the request is denied.", async () => {
+		patchTestScheme = {
+			username: "dannytest",
+			scheme_name: "patch test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: [
+				"this data shouldnt be patched",
+				"this data shouldnt be patched",
+			],
+		};
+
+		const schemeToPatchResponse = await request(app)
+			.post("/api/paintschemes")
+			.send(patchTestScheme);
+
+		schemeToPatch = schemeToPatchResponse.body;
+
+		const blankPatchData = {
+			username: "",
+			scheme_name: "",
+			paint_list: [],
+			steps: [],
+		};
+		return request(app)
+			.patch(`/api/paintschemes/${schemeToPatch._id}`)
+			.send(blankPatchData)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("One or more fields were empty");
 			});
 	});
 });
