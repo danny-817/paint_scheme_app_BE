@@ -444,7 +444,7 @@ describe("PATCH - /api/paintschemes", () => {
 				);
 			});
 	});
-	test("when a patch request is made with no data values the request is denied.", async () => {
+	test("when a patch request is made with no data values responds with a 400 code and appropriate message.", async () => {
 		patchTestScheme = {
 			username: "dannytest",
 			scheme_name: "blank patch data test scheme",
@@ -470,6 +470,37 @@ describe("PATCH - /api/paintschemes", () => {
 		return request(app)
 			.patch(`/api/paintschemes/${schemeToPatch._id}`)
 			.send(blankPatchData)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("One or more fields were empty");
+			});
+	});
+	test("when a patch request is made some data missing responds wiht a 400 code and appropriate message.", async () => {
+		patchTestScheme = {
+			username: "dannytest",
+			scheme_name: "partial patch data test scheme",
+			paint_list: ["Devlan Mud", "Sunburst Yellow"],
+			steps: [
+				"this data shouldnt be patched",
+				"this data shouldnt be patched",
+			],
+		};
+
+		const schemeToPatchResponse = await request(app)
+			.post("/api/paintschemes")
+			.send(patchTestScheme);
+
+		schemeToPatch = schemeToPatchResponse.body;
+
+		const partialPatchData = {
+			username: "",
+			scheme_name: "",
+			paint_list: ["Chaos Black", "SKull White"],
+			steps: ["Base", "Wash", "Layer", "Highlight"],
+		};
+		return request(app)
+			.patch(`/api/paintschemes/${schemeToPatch._id}`)
+			.send(partialPatchData)
 			.expect(400)
 			.then((response) => {
 				expect(response.body.msg).toBe("One or more fields were empty");
