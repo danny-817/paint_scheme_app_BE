@@ -39,9 +39,14 @@ router.post("/", (req, res, next) => {
 //update one
 router.patch("/:id", (req, res, next) => {
 	id = req.params.id;
-	patchPaintScheme(id, req.body)
+	patchData = req.body;
+	for (const key in patchData) {
+		if (patchData[key] === false || patchData[key].length === 0) {
+			res.status(400).send({ msg: "One or more fields were empty" });
+		}
+	}
+	patchPaintScheme(id, patchData)
 		.then((patchedScheme) => {
-			console.log(patchedScheme, "<<<<<<<<<<");
 			res.status(200).send({ msg: "Patch successful.", patchedScheme });
 		})
 		.catch(next);
