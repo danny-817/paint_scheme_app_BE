@@ -22,7 +22,12 @@ app.use((req, res) => {
 });
 
 app.use((err, request, response, next) => {
-	if (err.status && err.msg) {
+	// console.log(err.name, "err<<<<<<<");
+	if (err.name === "CastError") {
+		response.status(400).send({
+			msg: "An error occured, please check you entered the correct data.",
+		});
+	} else if (err.status && err.msg) {
 		response.status(err.status).send({ msg: err.msg });
 	} else next(err);
 });
