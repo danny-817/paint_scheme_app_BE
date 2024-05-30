@@ -590,4 +590,32 @@ describe("PATCH - /api/userprofiles", () => {
 				expect(response.body.msg).toBe("One or more fields were empty");
 			});
 	});
+	test("when a patch request is made with partial data values responds with a 400 code and appropriate message.", async () => {
+		patchTestUserProfile = {
+			username: "patchUserPartialDataTypeTest",
+			password: "newuserpassword",
+			email_address: "partialDataemail.com",
+			security_answers: ["new", "user", "answers"],
+		};
+
+		const userToPatchResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(patchTestUserProfile);
+
+		const partialProfileToPatch = userToPatchResponse.body;
+
+		const partialPatchData = {
+			email_address: "",
+			password: "patchedPassword",
+			security_answers: ["", "", ""],
+		};
+
+		return request(app)
+			.patch(`/api/userprofiles/${partialProfileToPatch._id}`)
+			.send(partialPatchData)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("One or more fields were empty");
+			});
+	});
 });
