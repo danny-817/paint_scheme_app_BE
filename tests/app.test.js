@@ -512,7 +512,7 @@ describe("PATCH - /api/userprofiles", () => {
 		patchTestUserProfile = {
 			username: "patchusertest",
 			password: "newuserpassword",
-			email_address: "newuser@email.com",
+			email_address: "patchuser@email.com",
 			security_answers: ["new", "user", "answers"],
 		};
 
@@ -526,7 +526,6 @@ describe("PATCH - /api/userprofiles", () => {
 			email_address: "patchedemailaddress@email.com",
 			security_answers: ["these", "are", "patched"],
 		};
-
 		return request(app)
 			.patch(`/api/userprofiles/${userProfileToPatch._id}`)
 			.send(patchData)
