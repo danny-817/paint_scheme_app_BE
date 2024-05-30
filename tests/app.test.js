@@ -534,7 +534,7 @@ describe("PATCH - /api/userprofiles", () => {
 				expect(response.body.msg).toBe("Patch successful.");
 			});
 	});
-	test("responds with a 400 code when the datat trying to be written is the incorrect type", async () => {
+	test("responds with a 400 code when the data trying to be written is the incorrect type", async () => {
 		patchTestUserProfile = {
 			username: "patchUserBadDataTypeTest",
 			password: "newuserpassword",
@@ -561,6 +561,33 @@ describe("PATCH - /api/userprofiles", () => {
 				expect(response.body.msg).toBe(
 					"An error occured, please check you entered the correct data."
 				);
+			});
+	});
+	test("when a patch request is made with no data values responds with a 400 code and appropriate message.", async () => {
+		patchTestUserProfile = {
+			username: "patchUserEmptyDataTypeTest",
+			password: "newuserpassword",
+			email_address: "emptyDataemail.com",
+			security_answers: ["new", "user", "answers"],
+		};
+
+		const userToPatchResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(patchTestUserProfile);
+
+		const userProfileToPatch = userToPatchResponse.body;
+
+		const emptyPatchData = {
+			email_address: "",
+			security_answers: ["", "", ""],
+		};
+
+		return request(app)
+			.patch(`/api/userprofiles/${userProfileToPatch._id}`)
+			.send(emptyPatchData)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe("One or more fields were empty");
 			});
 	});
 });
