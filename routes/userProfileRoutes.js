@@ -6,6 +6,7 @@ const { getAllUserProfiles } = require("../models/getAllUserProfiles.model");
 const { postNewUser } = require("../models/postNewUser.model");
 const { deleteUserById } = require("../models/deleteUser.model");
 const { getUserById } = require("../models/getUserById.model");
+const { patchUserProfile } = require("../models/patchUserProfile.model");
 
 router.get("/", (req, res, next) => {
 	getAllUserProfiles()
@@ -36,6 +37,21 @@ router.post("/", (req, res, next) => {
 	postNewUser(newUserData)
 		.then((newUser) => {
 			res.status(201).send(newUser);
+		})
+		.catch(next);
+});
+
+router.patch("/:id", (req, res, next) => {
+	const id = req.params.id;
+	const patchData = req.body;
+	for (const key in patchData) {
+		if (patchData[key] === false || patchData[key].length === 0) {
+			res.status(400).send({ msg: "One or more fields were empty" });
+		}
+	}
+	patchUserProfile(id, patchData)
+		.then((patchedUser) => {
+			res.status(200).send({ msg: "Patch successful.", patchedUser });
 		})
 		.catch(next);
 });

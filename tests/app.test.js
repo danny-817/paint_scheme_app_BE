@@ -507,3 +507,31 @@ describe("PATCH - /api/paintschemes", () => {
 			});
 	});
 });
+describe("PATCH - /api/userprofiles", () => {
+	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
+		patchTestUserProfile = {
+			username: "patchusertest",
+			password: "newuserpassword",
+			email_address: "patchuser@email.com",
+			security_answers: ["new", "user", "answers"],
+		};
+
+		const userToPatchResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(patchTestUserProfile);
+
+		const userProfileToPatch = userToPatchResponse.body;
+
+		const patchData = {
+			email_address: "patchedemailaddress@email.com",
+			security_answers: ["these", "are", "patched"],
+		};
+		return request(app)
+			.patch(`/api/userprofiles/${userProfileToPatch._id}`)
+			.send(patchData)
+			.expect(200)
+			.then((response) => {
+				expect(response.body.msg).toBe("Patch successful.");
+			});
+	});
+});
