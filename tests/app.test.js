@@ -534,4 +534,33 @@ describe("PATCH - /api/userprofiles", () => {
 				expect(response.body.msg).toBe("Patch successful.");
 			});
 	});
+	test("responds with a 400 code when the datat trying to be written is the incorrect type", async () => {
+		patchTestUserProfile = {
+			username: "patchUserBadDataTypeTest",
+			password: "newuserpassword",
+			email_address: "badDataType@email.com",
+			security_answers: ["new", "user", "answers"],
+		};
+
+		const userToPatchResponse = await request(app)
+			.post("/api/userprofiles")
+			.send(patchTestUserProfile);
+
+		const userProfileToPatch = userToPatchResponse.body;
+
+		const badPatchData = {
+			email_address: 1987401835,
+			security_answers: { wrongDataType: ["these", "are", "patched"] },
+		};
+
+		return request(app)
+			.patch(`/api/userprofiles/${userProfileToPatch._id}`)
+			.send(badPatchData)
+			.expect(400)
+			.then((response) => {
+				expect(response.body.msg).toBe(
+					"An error occured, please check you entered the correct data."
+				);
+			});
+	});
 });
