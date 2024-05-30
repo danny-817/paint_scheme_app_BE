@@ -16,13 +16,6 @@ async function postNewUser(newUserData) {
 				errorCode: error.code,
 			};
 		} else return error;
-
-		// if (error.errors.name === "ValidatorError") {
-		// 	console.log("test");
-		// 	return {
-		// 		errorMessage: error.message,
-		// 	};
-		// }
 	}
 }
 

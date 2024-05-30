@@ -6,8 +6,6 @@ const { getAllSchemes } = require("../models/getAllSchemes.model");
 const { createNewScheme } = require("../models/createNewScheme.model");
 const { getSchemeById } = require("../models/getSchemeById.model");
 const { patchPaintScheme } = require("../models/patchPaintScheme.model");
-// /api/paintschemes
-//get all
 
 router.get("/", (req, res) => {
 	getAllSchemes().then((allSchemes) => {
@@ -15,7 +13,6 @@ router.get("/", (req, res) => {
 	});
 });
 
-//get one
 router.get("/:id", (req, res, next) => {
 	const id = req.params.id;
 	if (mongoose.Types.ObjectId.isValid(id)) {
@@ -27,7 +24,6 @@ router.get("/:id", (req, res, next) => {
 	} else res.status(400).send({ msg: "Invalid ID used" });
 });
 
-//create one
 router.post("/", (req, res, next) => {
 	createNewScheme(req.body)
 		.then((addedScheme) => {
@@ -36,7 +32,6 @@ router.post("/", (req, res, next) => {
 		.catch(next);
 });
 
-//update one
 router.patch("/:id", (req, res, next) => {
 	id = req.params.id;
 	patchData = req.body;
@@ -52,7 +47,6 @@ router.patch("/:id", (req, res, next) => {
 		.catch(next);
 });
 
-//delete one
 router.delete("/:id", async (req, res) => {
 	try {
 		await paintscheme.deleteOne(res.item._id);
@@ -62,18 +56,4 @@ router.delete("/:id", async (req, res) => {
 	}
 });
 
-// async function getId(req, res, next) {
-// 	let item;
-// 	try {
-// 		item = await paintscheme.findById(req.params.id);
-// 		if (item == null) {
-// 			return res.status(404).json({ message: "cannot find item" });
-// 		}
-// 	} catch (err) {
-// 		return res.status(500).json({ message: err.message });
-// 	}
-// 	res.item = item;
-// 	console.log(res.item._id);
-// 	next();
-// }
 module.exports = router;
