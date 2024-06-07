@@ -353,7 +353,7 @@ describe("POST - /api/userprofiles", () => {
 	});
 });
 
-describe("DELETE - /api/useprofiles/${id}", () => {
+describe("DELETE - /api/useprofiles/:id", () => {
 	test("responds with a code of 204 ", async () => {
 		userToDelete = {
 			username: "delete this user",
@@ -381,6 +381,30 @@ describe("DELETE - /api/useprofiles/${id}", () => {
 			.then((response) => {
 				expect(response.body.msg).toBe("No user exists with this ID.");
 			});
+	});
+});
+
+describe("DELETE - /api/paintschemes/:id", () => {
+	test("responds with a 204 code when the deletion is successful", async () => {
+		paintSchemeToDelete = {
+			username: "dannytest",
+			scheme_name: "new scheme to delete",
+			paint_list: ["Corax White", "Phoenician Purple"],
+			steps: [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+				"Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. ",
+			],
+		};
+		const createdSchemeReponse = await request(app)
+			.post("/api/paintschemes")
+			.send(paintSchemeToDelete);
+
+		const schemeToDelete = createdSchemeReponse.body;
+
+		return request(app)
+			.delete(`/api/paintschemes/${schemeToDelete._id}`)
+			.expect(204);
 	});
 });
 describe("PATCH - /api/paintschemes", () => {
@@ -563,7 +587,7 @@ describe("PATCH - /api/userprofiles", () => {
 				);
 			});
 	});
-	test("when a patch request is made with no data values responds with a 400 code and appropriate message.", async () => {
+	test("when a patch request is made with no data values responds, with a 400 code and appropriate message.", async () => {
 		patchTestUserProfile = {
 			username: "patchUserEmptyDataTypeTest",
 			password: "newuserpassword",
@@ -590,7 +614,7 @@ describe("PATCH - /api/userprofiles", () => {
 				expect(response.body.msg).toBe("One or more fields were empty");
 			});
 	});
-	test("when a patch request is made with partial data values responds with a 400 code and appropriate message.", async () => {
+	test("when a patch request is made with partial data values, responds with a 400 code and appropriate message.", async () => {
 		patchTestUserProfile = {
 			username: "patchUserPartialDataTypeTest",
 			password: "newuserpassword",

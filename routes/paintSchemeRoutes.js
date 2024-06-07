@@ -47,13 +47,13 @@ router.patch("/:id", (req, res, next) => {
 		.catch(next);
 });
 
-router.delete("/:id", async (req, res) => {
-	try {
-		await paintscheme.deleteOne(res.item._id);
-		res.json({ message: "deleted subscriber" });
-	} catch (err) {
-		res.status(500).json({ message: err.message });
-	}
+router.delete("/:id", (req, res, next) => {
+	const idToDelete = req.params.id;
+	deleteSchemeById(idToDelete)
+		.then((response) => {
+			res.status(204).send();
+		})
+		.catch(next);
 });
 
 module.exports = router;
