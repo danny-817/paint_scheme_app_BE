@@ -406,6 +406,16 @@ describe("DELETE - /api/paintschemes/:id", () => {
 			.delete(`/api/paintschemes/${schemeToDelete._id}`)
 			.expect(204);
 	});
+	test("responds with a 404 code and suitable message when an incorrect ID is used to delete a paintscheme", () => {
+		return request(app)
+			.delete("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
+			.expect(404)
+			.then((response) => {
+				expect(response.body.msg).toBe(
+					"No scheme exists with this ID."
+				);
+			});
+	});
 });
 describe("PATCH - /api/paintschemes", () => {
 	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
