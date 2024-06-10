@@ -22,7 +22,6 @@ app.use((req, res) => {
 });
 
 app.use((err, request, response, next) => {
-	// console.log(err.name, "err<<<<<<<");
 	if (err.name === "CastError") {
 		response.status(400).send({
 			msg: "An error occured, please check you entered the correct data.",
@@ -32,5 +31,4 @@ app.use((err, request, response, next) => {
 	} else next(err);
 });
 
-//app.listen(9090, () => console.log("server started"));
 module.exports = app;
