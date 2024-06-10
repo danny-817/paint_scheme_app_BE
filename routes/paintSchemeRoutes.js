@@ -7,6 +7,7 @@ const { createNewScheme } = require("../models/createNewScheme.model");
 const { getSchemeById } = require("../models/getSchemeById.model");
 const { patchPaintScheme } = require("../models/patchPaintScheme.model");
 const { deleteSchemeById } = require("../models/deleteScheme.model");
+const { getAllSchemesByUser } = require("../models/getAllSchemesByUser.model");
 
 router.get("/", (req, res) => {
 	getAllSchemes().then((allSchemes) => {
@@ -14,15 +15,23 @@ router.get("/", (req, res) => {
 	});
 });
 
-router.get("/:id", (req, res, next) => {
-	const id = req.params.id;
-	if (mongoose.Types.ObjectId.isValid(id)) {
-		getSchemeById(id)
+router.get("/:identifier", (req, res, next) => {
+	const identifier = req.params.identifier;
+	if (mongoose.Types.ObjectId.isValid(identifier)) {
+		getSchemeById(identifier)
 			.then((singleScheme) => {
 				res.status(200).send(singleScheme);
 			})
 			.catch(next);
-	} else res.status(400).send({ msg: "Invalid ID used" });
+	} else if (identifier) {
+		getAllSchemesByUser(identifier)
+			.then((allSchemesByUser) => {
+				res.status(200).send(allSchemesByUser);
+			})
+			.catch(next);
+	} else {
+		res.status(400).send({ msg: "Invalid ID used" });
+	}
 });
 
 router.post("/", (req, res, next) => {

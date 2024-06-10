@@ -54,8 +54,18 @@ describe("GET - /api/paintschemes", () => {
 				});
 		});
 	});
+	describe("GET ALL PAINT SCHEMES BY SPECIFIED USER", () => {
+		test("responds with a 200 and all 8 schemes for user 'dannytest'", () => {
+			return request(app)
+				.get("/api/paintschemes/dannytest")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.length).toBe(8);
+				});
+		});
+	});
 });
-describe("GET - /api/paintschemes/${id} ", () => {
+describe("GET - /api/paintschemes/:id ", () => {
 	test("returns the correct paint schemes when given an ID", () => {
 		getOneTestScheme = {
 			username: "dannytest",
@@ -92,7 +102,7 @@ describe("GET - /api/paintschemes/${id} ", () => {
 				expect(response.body.msg).toBe("Invalid ID used");
 			});
 	});
-	test("returns and code of 404 when the id is valid but not in use", async () => {
+	test("returns a code of 404 when the id is valid but not in use", async () => {
 		request(app)
 			.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
 			.expect(404)
@@ -417,7 +427,7 @@ describe("DELETE - /api/paintschemes/:id", () => {
 			});
 	});
 });
-describe("PATCH - /api/paintschemes", () => {
+describe("PATCH - /api/paintschemes/:id", () => {
 	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
 		patchTestScheme = {
 			username: "dannytest",
@@ -509,7 +519,7 @@ describe("PATCH - /api/paintschemes", () => {
 				expect(response.body.msg).toBe("One or more fields were empty");
 			});
 	});
-	test("when a patch request is made some data missing responds wiht a 400 code and appropriate message.", async () => {
+	test("when a patch request is made some data missing responds with a 400 code and appropriate message.", async () => {
 		patchTestScheme = {
 			username: "dannytest",
 			scheme_name: "partial patch data test scheme",
@@ -541,7 +551,7 @@ describe("PATCH - /api/paintschemes", () => {
 			});
 	});
 });
-describe("PATCH - /api/userprofiles", () => {
+describe("PATCH - /api/userprofiles/:id", () => {
 	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
 		patchTestUserProfile = {
 			username: "patchusertest",
