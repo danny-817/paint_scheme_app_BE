@@ -49,7 +49,6 @@ router.patch("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
-	// console.log(req);
 	const idToDelete = req.params.id;
 	deleteSchemeById(idToDelete)
 		.then((response) => {
