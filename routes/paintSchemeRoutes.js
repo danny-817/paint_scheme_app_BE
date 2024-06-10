@@ -6,6 +6,7 @@ const { getAllSchemes } = require("../models/getAllSchemes.model");
 const { createNewScheme } = require("../models/createNewScheme.model");
 const { getSchemeById } = require("../models/getSchemeById.model");
 const { patchPaintScheme } = require("../models/patchPaintScheme.model");
+const { deleteSchemeById } = require("../models/deleteScheme.model");
 
 router.get("/", (req, res) => {
 	getAllSchemes().then((allSchemes) => {
@@ -48,6 +49,7 @@ router.patch("/:id", (req, res, next) => {
 });
 
 router.delete("/:id", (req, res, next) => {
+	// console.log(req);
 	const idToDelete = req.params.id;
 	deleteSchemeById(idToDelete)
 		.then((response) => {
