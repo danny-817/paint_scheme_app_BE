@@ -29,4 +29,10 @@ module.exports = [
 		email_address: "marcotest@mail.ru",
 		security_answers: ["pizza", "sunflower", "dog"],
 	},
+	{
+		username: "noschemestest",
+		password: "noschemestest1",
+		email_address: "noschemetest@mail.ru",
+		security_answers: ["pizza", "sunflower", "dog"],
+	},
 ];

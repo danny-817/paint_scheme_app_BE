@@ -55,12 +55,32 @@ describe("GET - /api/paintschemes", () => {
 		});
 	});
 	describe("GET ALL PAINT SCHEMES BY SPECIFIED USER", () => {
-		test("responds with a 200 and all 8 schemes for user 'dannytest'", () => {
+		test("responds with a 200 and all 3 schemes for user 'dannytest'", () => {
 			return request(app)
-				.get("/api/paintschemes/dannytest")
+				.get("/api/paintschemes/user/dannytest")
 				.expect(200)
 				.then((response) => {
-					expect(response.body.length).toBe(8);
+					console.log(response.body);
+					expect(response.body.length).toBe(3);
+				});
+		});
+		test("responds with a 200 and all 4 schemes for user 'stutest'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/stutest")
+				.expect(200)
+				.then((response) => {
+					console.log(response.body);
+					expect(response.body.length).toBe(4);
+				});
+		});
+		test("responds with a 200 and an appropriate message when the user has no saved schemes'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/noschemetest")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.msg).toBe(
+						"This user has no paintschemes saved"
+					);
 				});
 		});
 	});
@@ -204,12 +224,12 @@ describe("POST - /api/paintschemes", () => {
 });
 
 describe("GET - /api/userprofiles", () => {
-	test("responds with a 200 and a list of all user profiles (5)", () => {
+	test("responds with a 200 and a list of all user profiles (testUsers.length)", () => {
 		return request(app)
 			.get("/api/userprofiles")
 			.expect(200)
 			.then((response) => {
-				expect(response.body).toHaveLength(5);
+				expect(response.body).toHaveLength(testUsers.length);
 				response.body.forEach((profile) => {
 					expect(profile).toHaveProperty(
 						"username",
