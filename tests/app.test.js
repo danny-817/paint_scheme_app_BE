@@ -54,8 +54,46 @@ describe("GET - /api/paintschemes", () => {
 				});
 		});
 	});
+	describe("GET ALL PAINT SCHEMES BY SPECIFIED USER", () => {
+		test("responds with a 200 and all 3 schemes for user 'dannytest'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/dannytest")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.length).toBe(3);
+				});
+		});
+		test("responds with a 200 and all 4 schemes for user 'stutest'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/stutest")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.length).toBe(4);
+				});
+		});
+		test("responds with a 200 and an appropriate message when the user has no saved schemes'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/noschemetest")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.msg).toBe(
+						"This user has no paintschemes saved"
+					);
+				});
+		});
+		test("responds with a 400 and an appropriate message when the user cannot be found'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/fakeuser")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.msg).toBe(
+						"This user has no paintschemes saved"
+					);
+				});
+		});
+	});
 });
-describe("GET - /api/paintschemes/${id} ", () => {
+describe("GET - /api/paintschemes/:id ", () => {
 	test("returns the correct paint schemes when given an ID", () => {
 		getOneTestScheme = {
 			username: "dannytest",
@@ -92,7 +130,7 @@ describe("GET - /api/paintschemes/${id} ", () => {
 				expect(response.body.msg).toBe("Invalid ID used");
 			});
 	});
-	test("returns and code of 404 when the id is valid but not in use", async () => {
+	test("returns a code of 404 when the id is valid but not in use", async () => {
 		request(app)
 			.get("/api/paintschemes/53cb6b9b4f4ddef1ad47f943")
 			.expect(404)
@@ -194,12 +232,12 @@ describe("POST - /api/paintschemes", () => {
 });
 
 describe("GET - /api/userprofiles", () => {
-	test("responds with a 200 and a list of all user profiles (5)", () => {
+	test("responds with a 200 and a list of all user profiles (testUsers.length)", () => {
 		return request(app)
 			.get("/api/userprofiles")
 			.expect(200)
 			.then((response) => {
-				expect(response.body).toHaveLength(5);
+				expect(response.body).toHaveLength(testUsers.length);
 				response.body.forEach((profile) => {
 					expect(profile).toHaveProperty(
 						"username",
@@ -242,8 +280,6 @@ describe("GET - /api/userprofiles/${id}", () => {
 			.send(newUserToGet);
 
 		const createdUser = userToGetResponse.body;
-
-		// console.log(createdUser);
 
 		return request(app)
 			.get(`/api/userprofiles/${createdUser._id}`)
@@ -417,7 +453,7 @@ describe("DELETE - /api/paintschemes/:id", () => {
 			});
 	});
 });
-describe("PATCH - /api/paintschemes", () => {
+describe("PATCH - /api/paintschemes/:id", () => {
 	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
 		patchTestScheme = {
 			username: "dannytest",
@@ -509,7 +545,7 @@ describe("PATCH - /api/paintschemes", () => {
 				expect(response.body.msg).toBe("One or more fields were empty");
 			});
 	});
-	test("when a patch request is made some data missing responds wiht a 400 code and appropriate message.", async () => {
+	test("when a patch request is made some data missing responds with a 400 code and appropriate message.", async () => {
 		patchTestScheme = {
 			username: "dannytest",
 			scheme_name: "partial patch data test scheme",
@@ -541,7 +577,7 @@ describe("PATCH - /api/paintschemes", () => {
 			});
 	});
 });
-describe("PATCH - /api/userprofiles", () => {
+describe("PATCH - /api/userprofiles/:id", () => {
 	test("responds with a 200 code a confirmation msg of 'Patch successful.' ", async () => {
 		patchTestUserProfile = {
 			username: "patchusertest",

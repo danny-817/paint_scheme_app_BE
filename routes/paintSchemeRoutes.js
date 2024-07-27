@@ -7,6 +7,7 @@ const { createNewScheme } = require("../models/createNewScheme.model");
 const { getSchemeById } = require("../models/getSchemeById.model");
 const { patchPaintScheme } = require("../models/patchPaintScheme.model");
 const { deleteSchemeById } = require("../models/deleteScheme.model");
+const { getAllSchemesByUser } = require("../models/getAllSchemesByUser.model");
 
 router.get("/", (req, res) => {
 	getAllSchemes().then((allSchemes) => {
@@ -22,7 +23,27 @@ router.get("/:id", (req, res, next) => {
 				res.status(200).send(singleScheme);
 			})
 			.catch(next);
-	} else res.status(400).send({ msg: "Invalid ID used" });
+	}
+	// else if (identifier) {
+	// 	console.log(identifier, "2nd");
+
+	// 	getAllSchemesByUser(identifier)
+	// 		.then((allSchemesByUser) => {
+	// 			res.status(200).send(allSchemesByUser);
+	// 		})
+	// 		.catch(next);
+	// }
+	else {
+		res.status(400).send({ msg: "Invalid ID used" });
+	}
+});
+
+router.get("/user/:username", (req, res, next) => {
+	const userName = req.params.username;
+	// console.log(userName);
+	getAllSchemesByUser(userName)
+		.then((allUsersSchemes) => res.status(200).send(allUsersSchemes))
+		.catch(next);
 });
 
 router.post("/", (req, res, next) => {
