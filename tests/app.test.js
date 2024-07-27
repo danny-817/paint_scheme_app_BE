@@ -60,7 +60,6 @@ describe("GET - /api/paintschemes", () => {
 				.get("/api/paintschemes/user/dannytest")
 				.expect(200)
 				.then((response) => {
-					console.log(response.body);
 					expect(response.body.length).toBe(3);
 				});
 		});
@@ -69,13 +68,22 @@ describe("GET - /api/paintschemes", () => {
 				.get("/api/paintschemes/user/stutest")
 				.expect(200)
 				.then((response) => {
-					console.log(response.body);
 					expect(response.body.length).toBe(4);
 				});
 		});
 		test("responds with a 200 and an appropriate message when the user has no saved schemes'", () => {
 			return request(app)
 				.get("/api/paintschemes/user/noschemetest")
+				.expect(200)
+				.then((response) => {
+					expect(response.body.msg).toBe(
+						"This user has no paintschemes saved"
+					);
+				});
+		});
+		test("responds with a 400 and an appropriate message when the user cannot be found'", () => {
+			return request(app)
+				.get("/api/paintschemes/user/fakeuser")
 				.expect(200)
 				.then((response) => {
 					expect(response.body.msg).toBe(
@@ -272,8 +280,6 @@ describe("GET - /api/userprofiles/${id}", () => {
 			.send(newUserToGet);
 
 		const createdUser = userToGetResponse.body;
-
-		// console.log(createdUser);
 
 		return request(app)
 			.get(`/api/userprofiles/${createdUser._id}`)

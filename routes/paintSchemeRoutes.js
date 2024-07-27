@@ -40,7 +40,7 @@ router.get("/:id", (req, res, next) => {
 
 router.get("/user/:username", (req, res, next) => {
 	const userName = req.params.username;
-	console.log(userName);
+	// console.log(userName);
 	getAllSchemesByUser(userName)
 		.then((allUsersSchemes) => res.status(200).send(allUsersSchemes))
 		.catch(next);
