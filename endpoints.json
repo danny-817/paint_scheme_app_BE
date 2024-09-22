@@ -183,5 +183,42 @@
 				"security_answers": ["pizza", "sunflower", "dog"]
 			}
 		]
+	},
+	"GET /api/userprofiles/:id": {
+		"description": "responds with a user specified by the provided id on the response body",
+		"queries": [],
+		"example response": [
+			{
+				"username": "paultest",
+				"password": "Paultest1",
+				"email_address": "paul@test.jp",
+				"security_answers": ["pizza", "sunflower", "dog"]
+			}
+		]
+	},
+	"POST /api/userprofiles": {
+		"description": "Posts a new user a responds with a copy of the new user on the response body",
+		"queries": [],
+		"example response": {
+			"username": "newuser",
+			"password": "newuserpassword",
+			"email_address": "newuser@email.com",
+			"security_answers": ["new", "user", "answers"]
+		}
+	},
+	"PATCH /api/userprofiles/:id": {
+		"description": "patches a user based on the provided user id and returns a message and a copy of the patched user",
+		"queries": [],
+		"example response": {
+			"username": "stutest",
+			"password": "Stutest1",
+			"email_address": "stu@test.com",
+			"security_answers": ["dog", "sunflower", "pizza"]
+		}
+	},
+	"DELETE /api/userprofiles/:id": {
+		"description": "deletes a user based on the provided user id",
+		"queries": [],
+		"example response": "this only responds with a 204 html code."
 	}
 }
