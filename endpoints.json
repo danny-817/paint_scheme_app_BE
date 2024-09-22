@@ -1,9 +1,152 @@
 {
-	"GET /api/topics": {
-		"description": "serves an array of all topics",
+	"GET /api/paintschemes": {
+		"description": "serves an array of all saved paintschemes on the body of the response.",
+		"queries": [],
+		"exampleResponse": [
+			{
+				"username": "marcotest",
+				"scheme_name": "Flowdesk",
+				"scheme_for": "Brown capuchin"
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Aerified",
+				"paint_list": [
+					"Corax White",
+					"Phoenician Purple",
+					"Caledor Sky",
+					"Lupercal Green",
+					"Wraithbone",
+					"Death Korps Drab"
+				]
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Bamity",
+				"paint_list": [
+					"Corax White",
+					"Phoenician Purple",
+					"Caledor Sky",
+					"Lupercal Green",
+					"Wraithbone",
+					"Death Korps Drab",
+					"Dryad Bark",
+					"Iron Hands Steel",
+					"Daemonette Hide",
+					"Khorne Red",
+					"Runelord Brass"
+				]
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Overhold"
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "It",
+				"scheme_for": "Euro wallaby"
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Matsoft",
+				"scheme_for": "Vulture, egyptian"
+			}
+		]
+	},
+
+	"GET /api/paintschemes/:id": {
+		"description": "serves up a single paintscheme on the body of the response based on the supplied id",
 		"queries": [],
 		"exampleResponse": {
-			"topics": [{ "slug": "football", "description": "Footie!" }]
+			"username": "dannytest",
+			"scheme_name": "get one test scheme",
+			"paint_list": ["Devlan Mud", "Sunburst Yellow"],
+			"steps": [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi."
+			]
+		}
+	},
+	"GET /api/paintschemes/user/:username": {
+		"description": "responds with an array of a specified users paintschemes on the body of the response",
+		"queries": [],
+		"example response": [
+			{
+				"username": "jordtest",
+
+				"scheme_name": "Aerified",
+				"paint_list": [
+					"Corax White",
+					"Phoenician Purple",
+					"Caledor Sky",
+					"Lupercal Green",
+					"Wraithbone",
+					"Death Korps Drab"
+				]
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Bamity",
+				"paint_list": [
+					"Corax White",
+					"Phoenician Purple",
+					"Caledor Sky",
+					"Lupercal Green",
+					"Wraithbone",
+					"Death Korps Drab",
+					"Dryad Bark",
+					"Iron Hands Steel",
+					"Daemonette Hide",
+					"Khorne Red",
+					"Runelord Brass"
+				]
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Overhold"
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "It",
+				"scheme_for": "Euro wallaby"
+			},
+			{
+				"username": "jordtest",
+				"scheme_name": "Matsoft",
+				"scheme_for": "Vulture, egyptian"
+			}
+		]
+	},
+
+	"POST /api/paintschemes": {
+		"description": "posts a new paintscheme and responds with a copy of the new scheme",
+		"queries": [],
+		"example response": {
+			"username": "dannytest",
+			"scheme_name": "newly created scheme",
+			"paint_list": ["Corax White", "Phoenician Purple"],
+			"steps": [
+				"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+				"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+				"Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. "
+			]
+		}
+	},
+	"PATCH /api/paintschemes/:id": {
+		"description": "makes changes to a pre-existing paintscheme a returns a message and the patched paintscheme",
+		"queries": [],
+		"example response": {
+			"msg": "Patch successful.",
+			"patchedScheme": {
+				"username": "dannytest",
+				"scheme_name": "newly created scheme",
+				"paint_list": ["Corax White", "Phoenician Purple"],
+				"steps": [
+					"Ipsum sint minim tempor dolor deserunt dolor non veniam cupidatat elit irure. ",
+					"Et laboris velit consequat esse fugiat amet elit cillum esse magna nisi.",
+					"Aliquip adipisicing laborum est eiusmod qui ipsum do veniam non eu sunt esse. "
+				]
+			}
 		}
 	}
 }
