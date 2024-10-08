@@ -5,7 +5,13 @@ const paintSchemeRouter = require("./routes/paintSchemeRoutes");
 const userProfileRouter = require("./routes/userProfileRoutes");
 require("dotenv").config();
 
-mongoose.connect(process.env.TEST_DATABASE_URL);
+mongoose
+	.connect(process.env.TEST_DATABASE_URL, {
+		useNewUrlParser: true,
+		useUnifiedTopology: true,
+	})
+	.then(() => console.log("Connected to MongoDB"))
+	.catch((error) => console.error("MongoDB connection error:", error));
 
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
