@@ -1,17 +1,19 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+const paintSchemeRouter = require("./routes/paintSchemeRoutes");
+const userProfileRouter = require("./routes/userProfileRoutes");
 require("dotenv").config();
 
 mongoose.connect(process.env.TEST_DATABASE_URL);
+
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 
 const ENV = process.env.NODE_ENV;
+console.log(ENV);
 
 app.use(express.json());
-const paintSchemeRouter = require("./routes/paintSchemeRoutes");
-const userProfileRouter = require("./routes/userProfileRoutes");
 
 app.use("/api/paintschemes", paintSchemeRouter);
 

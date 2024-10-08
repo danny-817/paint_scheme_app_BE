@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const router = express.Router();
-const paintscheme = require("../schema/paintSchemeModel");
+//const paintscheme = require("../schema/paintSchemeModel");
 const { getAllSchemes } = require("../models/getAllSchemes.model");
 const { createNewScheme } = require("../models/createNewScheme.model");
 const { getSchemeById } = require("../models/getSchemeById.model");
