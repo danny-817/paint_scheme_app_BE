@@ -4,7 +4,6 @@ const testSchemes = require("../data/test_schemes");
 const testUsers = require("../data/test_users");
 const seed = require("../seed/seed");
 const paintScheme = require("../schema/paintSchemeModel");
-
 const app = require("../server");
 const { Long } = require("mongodb");
 
@@ -15,6 +14,17 @@ beforeAll(async () => {
 
 afterAll(() => {
 	mongoose.connection.close();
+});
+
+describe.only("provides a list of available endpoints", () => {
+	test("provides a list of available endpoints", () => {
+		return request(app)
+			.get("/api")
+			.expect(200)
+			.then((response) => {
+				console.log(response.body, "test response");
+			});
+	});
 });
 
 describe("non existant path", () => {

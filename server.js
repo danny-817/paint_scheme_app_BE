@@ -3,6 +3,7 @@ const express = require("express");
 const app = express();
 const paintSchemeRouter = require("./routes/paintSchemeRoutes");
 const userProfileRouter = require("./routes/userProfileRoutes");
+const provideEndpoints = require("./utils/provideEndpoints");
 require("dotenv").config();
 
 mongoose
@@ -20,6 +21,8 @@ const ENV = process.env.NODE_ENV;
 console.log(ENV);
 
 app.use(express.json());
+
+app.use("/api", provideEndpoints);
 
 app.use("/api/paintschemes", paintSchemeRouter);
 
