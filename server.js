@@ -22,7 +22,7 @@ console.log(ENV);
 
 app.use(express.json());
 
-app.use("/api", provideEndpoints);
+app.get("/api", provideEndpoints);
 
 app.use("/api/paintschemes", paintSchemeRouter);
 

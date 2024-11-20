@@ -16,13 +16,13 @@ afterAll(() => {
 	mongoose.connection.close();
 });
 
-describe.only("provides a list of available endpoints", () => {
+describe("provides a list of available endpoints", () => {
 	test("provides a list of available endpoints", () => {
 		return request(app)
 			.get("/api")
 			.expect(200)
 			.then((response) => {
-				console.log(response.body, "test response");
+				//console.log(response.body, "test response");
 			});
 	});
 });
