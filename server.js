@@ -6,8 +6,22 @@ const userProfileRouter = require("./routes/userProfileRoutes");
 const provideEndpoints = require("./utils/provideEndpoints");
 require("dotenv").config();
 
+const ENV = process.env.NODE_ENV || "development";
+
+const databaseUrl = (() => {
+	switch (ENV) {
+		case "test":
+			return process.env.TEST_DATABASE_URL;
+		case "development":
+			return process.env.DEV_DATABASE_URL;
+		case "production":
+		default:
+			return process.env.DATABASE_URL;
+	}
+})();
+
 mongoose
-	.connect(process.env.TEST_DATABASE_URL, {
+	.connect(databaseUrl, {
 		useNewUrlParser: true,
 		useUnifiedTopology: true,
 	})
@@ -17,8 +31,7 @@ mongoose
 const db = mongoose.connection;
 db.on("error", (error) => console.error(error));
 
-const ENV = process.env.NODE_ENV;
-console.log(ENV);
+console.log("Environment variable - ", ENV);
 
 app.use(express.json());
 
