@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const app = express();
+const cors = require("cors");
 const paintSchemeRouter = require("./routes/paintSchemeRoutes");
 const userProfileRouter = require("./routes/userProfileRoutes");
 const provideEndpoints = require("./utils/provideEndpoints");
@@ -34,6 +35,7 @@ db.on("error", (error) => console.error(error));
 console.log("Environment variable - ", ENV);
 
 app.use(express.json());
+app.use(cors());
 
 app.get("/api", provideEndpoints);
 
